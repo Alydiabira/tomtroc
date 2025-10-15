@@ -17,12 +17,15 @@
             Those two blocks defines frontend entrypoint for CSS and JavaScript assets
             See https://symfony.com/doc/current/frontend.html
         #}
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
+
+        {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
+
     </head>
 
     <body id="{% block body_id %}{% endblock %}" class="{{ is_rtl(app.locale) ? 'rtl' }}">
@@ -33,8 +36,9 @@
                 <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
                     <div class="container">
                         <a class="navbar-brand" href="{{ path('homepage') }}">
-                            Symfony Demo
+                            <img src="{{ asset('images/logo-tomtroc.svg') }}" alt="TomTroc" height="32">
                         </a>
+
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#appNavbar" aria-controls="appNavbar" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
@@ -116,7 +120,7 @@
                 <div class="container">
                     <div class="row">
                         <div id="footer-copyright" class="col-md-6">
-                            <p>&copy; {{ 'now'|date('Y') }} - The Symfony Project</p>
+                            <p>&copy; {{ 'now'|date('Y') }} - TomTroc</p>
                             <p>{{ 'mit_license'|trans }}</p>
                         </div>
                         <div id="footer-resources" class="col-md-6">
