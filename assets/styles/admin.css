@@ -1,22 +1,26 @@
-/* Page: 'Backend post index'
-   ------------------------------------------------------------------------- */
-body#admin_post_index .item-actions {
-  white-space: nowrap
+body#admin_post_index .item-actions a.btn {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 6px;
+  padding: 6px 12px;
+  transition: background-color 0.3s ease;
 }
 
-body#admin_post_index .item-actions a.btn + a.btn {
-  margin-left: 4px
+body#admin_post_index .item-actions a.btn:hover {
+  background-color: #45A049;
 }
 
-/* Page: 'Backend post show'
-   ------------------------------------------------------------------------- */
 body#admin_post_show .post-tags .label-default {
-  background-color: #e9ecec;
-  color: #6D8283;
-  font-size: 16px;
-  margin-right: 10px;
-  padding: .4em 1em .5em;
+  background: linear-gradient(to right, #f5f5dc, #e9ecec);
+  border-radius: 20px;
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
-body#admin_post_show .post-tags .label-default i {
-  color: #95A6A7;
+
+body#admin_post_index {
+  background-image: url('/images/bookshelf.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
+
