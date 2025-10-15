@@ -19,3 +19,21 @@ body {
 .btn-success:hover {
   background-color: #45A049;
 }
+
+.form-edit-user input,
+.form-edit-user textarea {
+  background-color: #fdfdf6;
+  border: 1px solid #ced4da;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+.btn-success {
+  background-color: #4CAF50;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-success:hover {
+  background-color: #45A049;
+}
