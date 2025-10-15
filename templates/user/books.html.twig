@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+{% block body_id 'user_books' %}
+
+{% block main %}
+<div class="container mt-5">
+    <h2 class="mb-4">Mes livres</h2>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>Photo</th>
+                    <th>Titre</th>
+                    <th>Auteur</th>
+                    <th>Description</th>
+                    <th>Disponibilité</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                    <tr>
+                        <td><img src="{{ asset('uploads/' ~ book.image|default('default.jpg')) }}" width="60" class="rounded"></td>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.author }}</td>
+                        <td>{{ book.description|length > 80 ? book.description|slice(0, 80) ~ '...' : book.description }}</td>
+                        <td>
+                            <span class="badge {{ book.available ? 'bg-success' : 'bg-danger' }}">
+                                {{ book.available ? 'disponible' : 'non dispo' }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ path('admin_book_edit', { id: book.id }) }}" class="btn btn-sm btn-outline-secondary rounded-pill">✏️</a>
+                            <a href="{{ path('admin_book_delete', { id: book.id }) }}" class="btn btn-sm btn-outline-danger rounded-pill" onclick="return confirm('Confirmer la suppression ?')">🗑️</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="6" class="text-center text-muted">Aucun livre enregistré</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
