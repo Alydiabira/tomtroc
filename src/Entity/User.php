@@ -1,38 +1,20 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Defines the properties of the User entity to represent the application users.
- *
- * See https://symfony.com/doc/current/doctrine.html#creating-an-entity-class
- *
- * @author Ryan Weaver <weaverryan@gmail.com>
- * @author Javier Eguiluz <javier.eguiluz@gmail.com>
- */
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'symfony_demo_user')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    // We can use constants for roles to find usages all over the application rather
-    // than doing a full-text search on the "ROLE_" string.
-    // It also prevents from making typo errors.
     final public const ROLE_USER = 'ROLE_USER';
     final public const ROLE_ADMIN = 'ROLE_ADMIN';
 
@@ -57,25 +39,52 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::STRING)]
     private ?string $password = null;
 
-    /**
-     * @var string[]
-     */
     #[ORM\Column(type: Types::JSON)]
     private array $roles = [];
+
+    #[ORM\Column(type: Types::STRING, length: 50, nullable: true)]
+    private ?string $pseudo = null;
+
+    #[ORM\Column(type: Types::STRING, length: 20, nullable: true)]
+    private ?string $phoneNumber = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $message = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $avatar = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private \DateTimeInterface $createdAt;
+
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Book::class)]
+    private Collection $books;
+
+    
+
+    public function getBooks(): Collection
+    {
+        return $this->books;
+    }
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setFullName(string $fullName): void
-    {
-        $this->fullName = $fullName;
-    }
-
     public function getFullName(): ?string
     {
         return $this->fullName;
+    }
+
+    public function setFullName(string $fullName): void
+    {
+        $this->fullName = $fullName;
     }
 
     public function getUserIdentifier(): string
@@ -113,53 +122,87 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->password = $password;
     }
 
-    /**
-     * Returns the roles or permissions granted to the user for security.
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
-
-        // guarantees that a user always has at least one role for security
         if (empty($roles)) {
             $roles[] = self::ROLE_USER;
         }
-
         return array_unique($roles);
     }
 
-    /**
-     * @param string[] $roles
-     */
     public function setRoles(array $roles): void
     {
         $this->roles = $roles;
     }
 
-    /**
-     * Removes sensitive data from the user.
-     *
-     * {@inheritdoc}
-     */
     public function eraseCredentials(): void
     {
-        // if you had a plainPassword property, you'd nullify it here
         // $this->plainPassword = null;
     }
 
-    /**
-     * @return array{int|null, string|null, string|null}
-     */
     public function __serialize(): array
     {
         return [$this->id, $this->username, $this->password];
     }
 
-    /**
-     * @param array{int|null, string, string} $data
-     */
     public function __unserialize(array $data): void
     {
         [$this->id, $this->username, $this->password] = $data;
+    }
+
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(?string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
+        return $this;
+    }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phoneNumber;
+    }
+
+    public function setPhoneNumber(?string $phoneNumber): self
+    {
+        $this->phoneNumber = $phoneNumber;
+        return $this;
+    }
+
+    public function getMessage(): ?string
+    {
+        return $this->message;
+    }
+
+    public function setMessage(?string $message): self
+    {
+        $this->message = $message;
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): self
+    {
+        $this->avatar = $avatar;
+        return $this;
+    }
+
+    public function getCreatedAt(): \DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+        return $this;
     }
 }
