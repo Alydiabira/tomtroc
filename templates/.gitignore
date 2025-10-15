@@ -1,0 +1,7 @@
+/vendor/
+/var/
+/.env
+.env.local
+node_modules/
+/public/build/
+/public/uploads/
