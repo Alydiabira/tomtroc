@@ -79,4 +79,40 @@ final class UserController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('', name: 'user_account', methods: ['GET'])]
+    public function account(#[CurrentUser] User $user): Response
+    {
+        return $this->render('user/account.html.twig', [
+            'user' => $user,
+        ]);
+    }
+
+    #[Route('/avatar', name: 'user_avatar', methods: ['POST'])]
+    public function updateAvatar(
+        #[CurrentUser] User $user,
+        Request $request,
+        EntityManagerInterface $entityManager,
+    ): Response {
+        $file = $request->files->get('avatar');
+        if ($file) {
+            $filename = uniqid().'.'.$file->guessExtension();
+            $file->move($this->getParameter('uploads_directory'), $filename);
+            $user->setAvatar($filename);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('user_account');
+    }
+
+    #[Route('/books', name: 'user_books', methods: ['GET'])]
+    public function books(#[CurrentUser] User $user): Response
+    {
+        return $this->render('user/books.html.twig', [
+            'books' => $user->getBooks(),
+        ]);
+    }
+
+
+
 }
