@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="conversation-container">
+    <div class="header">
+        <h2>💬 Conversation avec 
+            {{ conversation.user1 == app.user ? conversation.user2.username : conversation.user1.username }}
+        </h2>
+    </div>
+
+    <div class="chat-window">
+        {% for message in messages %}
+            <div class="message-row {{ message.sender == app.user ? 'sent' : 'received' }}">
+                <div class="avatar">
+                    <img src="{{ message.sender.avatarUrl ?? '/images/default-avatar.png' }}" alt="Avatar">
+                </div>
+                <div class="bubble">
+                    <p>{{ message.content }}</p>
+                    <span class="timestamp">{{ message.createdAt|date('H:i d/m') }}</span>
+                </div>
+            </div>
+        {% else %}
+            <p class="no-message">Aucun message pour le moment.</p>
+        {% endfor %}
+    </div>
+
+    <div class="message-form">
+        {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
+            <div class="form-group">
+                {{ form_widget(form.content, {'attr': {'placeholder': 'Tapez votre message ici...', 'class': 'form-control'}}) }}
+            </div>
+            <button type="submit" class="btn btn-success">Envoyer</button>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}
