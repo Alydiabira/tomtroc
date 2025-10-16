@@ -18,15 +18,17 @@
         {% endif %}
 
         <form method="post" action="{{ path('app_login', {'_locale': app.request.locale}) }}">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
             <div class="mb-3">
-                <label for="username" class="form-label">Email</label>
-                <input type="text" id="username" name="_username" value="{{ last_username }}" required autofocus class="form-control" {{ stimulus_target('login', 'username') }}>
+                <label for="inputEmail" class="form-label">Email</label>
+                <input type="text" id="inputEmail" name="_username" value="{{ last_username }}" required autofocus class="form-control" {{ stimulus_target('login', 'email') }}>
             </div>
 
             <div class="mb-3">
-                <label for="password" class="form-label">Mot de passe</label>
+                <label for="inputPassword" class="form-label">Mot de passe</label>
                 <div class="input-group">
-                    <input type="password" id="password" name="_password" required class="form-control" {{ stimulus_target('login', 'password') }}>
+                    <input type="password" id="inputPassword" name="_password" required class="form-control" {{ stimulus_target('login', 'password') }}>
                     <button type="button" class="btn btn-outline-secondary" {{ stimulus_action('login', 'togglePasswordInputType') }}>
                         <twig:ux:icon name="tabler:eye" />
                     </button>
@@ -37,9 +39,6 @@
                 <input type="checkbox" class="form-check-input" id="remember_me" name="_remember_me" checked>
                 <label class="form-check-label" for="remember_me">Se souvenir de moi</label>
             </div>
-
-            <input type="hidden" name="_target_path" value="{{ app.request.get('redirect_to') }}">
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
             <button type="submit" class="btn btn-success w-100">
                 <twig:ux:icon name="tabler:login"/> Se connecter
