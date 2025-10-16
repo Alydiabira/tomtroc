@@ -1,12 +1,18 @@
+/* Base styles */
 body {
   background-color: #fdfdf6;
   font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
+/* Navbar */
 .navbar {
   background-color: #4CAF50;
+  color: white;
 }
 
+/* Buttons */
 .btn-success {
   background-color: #4CAF50;
   border: none;
@@ -20,6 +26,7 @@ body {
   background-color: #45A049;
 }
 
+/* Form styling */
 .form-edit-user input,
 .form-edit-user textarea {
   background-color: #fdfdf6;
@@ -28,84 +35,103 @@ body {
   font-size: 16px;
 }
 
-.btn-success {
-  background-color: #4CAF50;
-  border: none;
-  transition: background-color 0.3s ease;
-}
-
-.btn-success:hover {
-  background-color: #45A049;
-}
-
-
+/* Chat styles */
 .conversation-container {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-    background: #fdfdfd;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background: #fdfdfd;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
 }
 
 .chat-window {
-    margin-bottom: 20px;
-    max-height: 500px;
-    overflow-y: auto;
+  margin-bottom: 20px;
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 .message-row {
-    display: flex;
-    align-items: flex-end;
-    margin-bottom: 12px;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 12px;
 }
 
 .message-row.sent {
-    justify-content: flex-end;
+  justify-content: flex-end;
 }
 
 .message-row.received {
-    justify-content: flex-start;
+  justify-content: flex-start;
 }
 
 .bubble {
-    background-color: #e0f7e9;
-    padding: 10px 15px;
-    border-radius: 20px;
-    max-width: 60%;
-    position: relative;
+  background-color: #e0f7e9;
+  padding: 10px 15px;
+  border-radius: 20px;
+  max-width: 60%;
+  position: relative;
 }
 
 .message-row.sent .bubble {
-    background-color: #d1eaff;
+  background-color: #d1eaff;
 }
 
 .timestamp {
-    font-size: 0.75em;
-    color: #888;
-    margin-top: 4px;
-    display: block;
-    text-align: right;
+  font-size: 0.75em;
+  color: #888;
+  margin-top: 4px;
+  display: block;
+  text-align: right;
 }
 
 .avatar img {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    margin-right: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 8px;
 }
 
-
+/* Login page */
 .login-background {
-    background-image: url('/images/bookshelf.jpg');
-    background-size: cover;
-    background-position: center;
-    padding: 80px 0;
+  background-image: url('/images/bookshelf.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 80px 0;
 }
 
 .login-wrapper {
-    background-color: rgba(255, 255, 255, 0.95);
-    max-width: 420px;
-    margin: auto;
+  background-color: rgba(255, 255, 255, 0.95);
+  max-width: 420px;
+  margin: auto;
+  padding: 30px 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.6s ease-in-out;
 }
 
+/* Register page */
+.register-background {
+  background: url('/images/register-background.jpg') no-repeat center center fixed;
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-wrapper {
+  background-color: rgba(255, 255, 255, 0.95);
+  max-width: 400px;
+  width: 100%;
+  padding: 30px 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
