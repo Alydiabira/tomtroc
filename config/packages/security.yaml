@@ -82,3 +82,6 @@ when@test:
         firewalls:
             main:
                 http_basic: ~
+
+        access_control: 
+        - { path: ^/messagerie, roles: IS_AUTHENTICATED_FULLY }       
