@@ -17,7 +17,7 @@
             </div>
         {% endif %}
 
-        <form action="{{ path('app_login') }}" method="post" {{ stimulus_controller('login') }}>
+        <form method="post" action="{{ path('app_login', {'_locale': app.request.locale}) }}">
             <div class="mb-3">
                 <label for="username" class="form-label">Email</label>
                 <input type="text" id="username" name="_username" value="{{ last_username }}" required autofocus class="form-control" {{ stimulus_target('login', 'username') }}>
