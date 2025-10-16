@@ -1,55 +1,54 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Connexion - TomTroc{% endblock %}
 {% block body_id %}login{% endblock %}
 
 {% block main %}
-    {% if error %}
-        <div class="alert alert-danger" role="alert">
-            {{ error.messageKey|trans(error.messageData, 'security') }}
+<div class="login-background">
+    <div class="login-wrapper shadow-lg rounded p-4">
+        <div class="text-center mb-4">
+            <img src="{{ asset('images/logo-tomtroc.svg') }}" alt="TomTroc" height="48">
+            <h2 class="mt-2">Se connecter à TomTroc</h2>
         </div>
-    {% endif %}
 
-    {#
-        This references the Stimulus controller defined in "assets/controllers/login-controller.js".
-        See https://symfony.com/bundles/StimulusBundle/current/index.html
-        For more info on Symfony UX see https://ux.symfony.com
-    #}
-    <div class="row" {{ stimulus_controller('login') }}>
-        <div class="col-sm-5">
-            <div class="well">
-                <form action="{{ path('app_login') }}" method="post">
-                    <fieldset>
-                        <legend><twig:ux:icon name="tabler:lock"/> {{ 'title.login'|trans }}</legend>
-                        <div class="mb-3">
-                            <label class="form-label" for="username">{{ 'label.username'|trans }}</label>
-                            <input class="form-control" {{ stimulus_target('login', 'username') }} id="username" name="_username" required="required" type="text" value="{{ last_username }}">
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label" for="password">{{ 'label.password'|trans }}</label>
-                            <div class="input-group">
-                                <input class="form-control" {{ stimulus_target('login', 'password') }} id="password" name="_password" required="required" type="password">
-                                <button class="btn btn-primary" type="button" {{ stimulus_action('login', 'togglePasswordInputType') }}><twig:ux:icon name="tabler:eye" aria-hidden="false" aria-label="Toggle password visibility"/></button>
-                            </div>
-                        </div>
-
-                        <div class="mb-3 form-check">
-                            <input class="form-check-input" id="remember_me" name="_remember_me" type="checkbox" checked>
-                            <label class="form-check-label" for="remember_me">{{ 'label.remember_me'|trans }}</label>
-                        </div>
-
-                        <input type="hidden" name="_target_path" value="{{ app.request.get('redirect_to') }}">
-                        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
-                        <button type="submit" class="btn btn-primary">
-                            <twig:ux:icon name="tabler:login"/> {{ 'action.sign_in'|trans }}
-                        </button>
-                    </fieldset>
-                </form>
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
             </div>
-        </div>
+        {% endif %}
 
-        
+        <form action="{{ path('app_login') }}" method="post" {{ stimulus_controller('login') }}>
+            <div class="mb-3">
+                <label for="username" class="form-label">Email</label>
+                <input type="text" id="username" name="_username" value="{{ last_username }}" required autofocus class="form-control" {{ stimulus_target('login', 'username') }}>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Mot de passe</label>
+                <div class="input-group">
+                    <input type="password" id="password" name="_password" required class="form-control" {{ stimulus_target('login', 'password') }}>
+                    <button type="button" class="btn btn-outline-secondary" {{ stimulus_action('login', 'togglePasswordInputType') }}>
+                        <twig:ux:icon name="tabler:eye" />
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="remember_me" name="_remember_me" checked>
+                <label class="form-check-label" for="remember_me">Se souvenir de moi</label>
+            </div>
+
+            <input type="hidden" name="_target_path" value="{{ app.request.get('redirect_to') }}">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <button type="submit" class="btn btn-success w-100">
+                <twig:ux:icon name="tabler:login"/> Se connecter
+            </button>
+
+            <p class="text-center mt-3">
+                <a href="{{ path('app_register') }}">Pas encore inscrit ? Créez un compte</a>
+            </p>
+        </form>
     </div>
+</div>
 {% endblock %}
-
-
