@@ -1,4 +1,5 @@
 // start the Stimulus application
+import './styles/app.css';
 import './bootstrap.js';
 import './styles/app.scss';
 import 'highlight.js/styles/github-dark-dimmed.css';
