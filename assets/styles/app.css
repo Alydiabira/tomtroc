@@ -37,3 +37,60 @@ body {
 .btn-success:hover {
   background-color: #45A049;
 }
+
+
+.conversation-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background: #fdfdfd;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.chat-window {
+    margin-bottom: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.message-row {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 12px;
+}
+
+.message-row.sent {
+    justify-content: flex-end;
+}
+
+.message-row.received {
+    justify-content: flex-start;
+}
+
+.bubble {
+    background-color: #e0f7e9;
+    padding: 10px 15px;
+    border-radius: 20px;
+    max-width: 60%;
+    position: relative;
+}
+
+.message-row.sent .bubble {
+    background-color: #d1eaff;
+}
+
+.timestamp {
+    font-size: 0.75em;
+    color: #888;
+    margin-top: 4px;
+    display: block;
+    text-align: right;
+}
+
+.avatar img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
