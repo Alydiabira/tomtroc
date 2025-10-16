@@ -9,3 +9,25 @@
 <p>
     Cheers!
 </p>
+<h1>Bienvenue sur TomTroc ! 📚</h1>
+
+<p>
+    Pour activer votre compte et rejoindre notre communauté de lecteurs passionnés,<br>
+    veuillez confirmer votre adresse email en cliquant sur le lien ci-dessous :
+</p>
+
+<p style="margin: 20px 0;">
+    <a href="{{ signedUrl|raw }}" style="background-color: #28a745; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none;">
+        ✅ Confirmer mon adresse email
+    </a>
+</p>
+
+<p>
+    Ce lien est valable jusqu’à {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.<br>
+    Si vous n’avez pas demandé cette inscription, vous pouvez ignorer ce message.
+</p>
+
+<p>
+    À très vite sur TomTroc,<br>
+    <strong>L’équipe TomTroc</strong>
+</p>
