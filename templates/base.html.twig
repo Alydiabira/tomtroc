@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="view-transition" content="same-origin">
-        <title>{% block title %}tomtroc {% endblock %}</title>
+        <title>{% block title %}TomTroc{% endblock %}</title>
         <link rel="alternate" type="application/rss+xml" title="{{ 'rss.title'|trans }}" href="{{ path('blog_rss') }}">
         <link rel="shortcut icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
 
@@ -16,14 +16,15 @@
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
-        {% block javascripts %}
-        {{ encore_entry_script_tags('app') }}
-        {% block importmap %}{{ importmap('app') }}{% endblock %}
-    {% endblock %}
+       {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+
 
     </head>
 
-    <body id="{% block body_id %}{% endblock %}" class="{{ is_rtl(app.locale) ? 'rtl' }}">
+    <body id="{% block body_id %}{% endblock %}" class="tomtroc-theme {{ is_rtl(app.locale) ? 'rtl' }}">
 
         {% block header %}
             {% set _route = app.current_route %}
@@ -88,19 +89,18 @@
             </header>
         {% endblock %}
 
-        <div class="container body-container">
-            {% block body %}
-                <div class="row">
-                    <div id="main" class="col-sm-9">
-                        {{ include('default/_flash_messages.html.twig') }}
-
-                        {% block main %}{% endblock %}
-                    </div>
-
-                    
-                </div>
-            {% endblock %}
+        <div class="row">
+            <div id="main" class="col-sm-9">
+                {{ include('default/_flash_messages.html.twig') }}
+                {% block main %}{% endblock %}
+            </div>
+            <div class="col-sm-3">
+                {% block sidebar %}{% endblock %}
+            </div>
         </div>
+
+        {# Footer #}
+
 
         {% block footer %}
             <footer>
