@@ -12,10 +12,9 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'symfony_demo_user')]
-#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
+#[UniqueEntity(fields: ['email'], message: 'Il existe déjà un compte avec cet email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     final public const ROLE_USER = 'ROLE_USER';
@@ -36,10 +35,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $username = null;
 
     #[ORM\Column(type: Types::STRING, unique: true)]
+    #[Assert\NotBlank]
     #[Assert\Email]
     private ?string $email = null;
 
     #[ORM\Column(type: Types::STRING)]
+    #[Assert\NotBlank]
     private ?string $password = null;
 
     #[ORM\Column(type: Types::JSON)]
@@ -63,25 +64,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Book::class)]
     private Collection $books;
 
-    /**
-     * @var Collection<int, Message>
-     */
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'sender')]
     private Collection $messages;
 
     #[ORM\Column]
     private bool $isVerified = false;
 
-    
-
-    public function getBooks(): Collection
-    {
-        return $this->books;
-    }
-
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->books = new ArrayCollection();
         $this->messages = new ArrayCollection();
     }
 
@@ -90,29 +82,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getFullName(): ?string
-    {
-        return $this->fullName;
-    }
-
-    public function setFullName(string $fullName): void
-    {
-        $this->fullName = $fullName;
-    }
-
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
-    }
-
-    public function getUsername(): string
-    {
-        return $this->getUserIdentifier();
-    }
-
-    public function setUsername(string $username): void
-    {
-        $this->username = $username;
     }
 
     public function getEmail(): ?string
@@ -138,7 +110,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        if (empty($roles)) {
+        if (!in_array(self::ROLE_USER, $roles)) {
             $roles[] = self::ROLE_USER;
         }
         return array_unique($roles);
@@ -154,14 +126,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function __serialize(): array
+    public function getFullName(): ?string
     {
-        return [$this->id, $this->username, $this->password];
+        return $this->fullName;
     }
 
-    public function __unserialize(array $data): void
+    public function setFullName(string $fullName): void
     {
-        [$this->id, $this->username, $this->password] = $data;
+        $this->fullName = $fullName;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
     }
 
     public function getPseudo(): ?string
@@ -219,9 +201,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Message>
-     */
+    public function getBooks(): Collection
+    {
+        return $this->books;
+    }
+
     public function getMessages(): Collection
     {
         return $this->messages;
@@ -240,7 +224,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeMessage(Message $message): static
     {
         if ($this->messages->removeElement($message)) {
-            // set the owning side to null (unless already changed)
             if ($message->getSender() === $this) {
                 $message->setSender(null);
             }
@@ -257,7 +240,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
-
         return $this;
     }
 }
