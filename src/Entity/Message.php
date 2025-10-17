@@ -6,6 +6,8 @@ use App\Repository\MessageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
+use App\Entity\Conversation;
+
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
 class Message
@@ -26,6 +28,9 @@ class Message
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
     private ?User $recipient = null;
+
+    #[ORM\ManyToOne(inversedBy: 'messages')]
+    private ?Conversation $conversation = null;
 
     public function getId(): ?int
     {
@@ -73,6 +78,18 @@ class Message
     public function setRecipient(?User $recipient): static
     {
         $this->recipient = $recipient;
-        return $this;
+        return 
+        $this;
     }
+
+    public function getConversation(): ?Conversation
+{
+    return $this->conversation;
+}
+
+public function setConversation(?Conversation $conversation): static
+{
+    $this->conversation = $conversation;
+    return $this;
+}
 }
