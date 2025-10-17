@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use App\Entity\User;
 
 #[ORM\Entity(repositoryClass: ConversationRepository::class)]
 class Conversation
@@ -27,11 +27,15 @@ class Conversation
     private ?User $user2 = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-private ?\DateTimeImmutable $createdAt = null;
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    private ?\DateTimeImmutable $lastMessageAt = null;
 
     public function __construct()
     {
         $this->messages = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -63,6 +67,17 @@ private ?\DateTimeImmutable $createdAt = null;
     public function setUser2(?User $user2): static
     {
         $this->user2 = $user2;
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
         return $this;
     }
 
