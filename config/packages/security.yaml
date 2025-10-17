@@ -84,4 +84,7 @@ when@test:
                 http_basic: ~
 
         access_control: 
-        - { path: ^/messagerie, roles: IS_AUTHENTICATED_FULLY }       
+        - { path: ^/messagerie, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/register, roles: PUBLIC_ACCESS }       
