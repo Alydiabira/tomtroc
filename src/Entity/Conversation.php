@@ -5,7 +5,9 @@ namespace App\Entity;
 use App\Repository\ConversationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+
 
 #[ORM\Entity(repositoryClass: ConversationRepository::class)]
 class Conversation
@@ -15,7 +17,7 @@ class Conversation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToMany(mappedBy: 'conversation', targetEntity: Message::class)]
+    #[ORM\OneToMany(mappedBy: 'conversation', targetEntity: Message::class, cascade: ['persist', 'remove'])]
     private Collection $messages;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
@@ -24,20 +26,23 @@ class Conversation
     #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $user2 = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $lastMessageAt = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+private ?\DateTimeImmutable $createdAt = null;
 
-    public function getLastMessageAt(): ?\DateTimeImmutable
+    public function __construct()
     {
-        return $this->lastMessageAt;
+        $this->messages = new ArrayCollection();
     }
 
-    public function setLastMessageAt(\DateTimeImmutable $lastMessageAt): static
+    public function getId(): ?int
     {
-        $this->lastMessageAt = $lastMessageAt;
-        return $this;
+        return $this->id;
     }
 
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
 
     public function getUser1(): ?User
     {
@@ -61,18 +66,14 @@ class Conversation
         return $this;
     }
 
-    public function __construct()
+    public function getLastMessageAt(): ?\DateTimeImmutable
     {
-        $this->messages = new ArrayCollection();
+        return $this->lastMessageAt;
     }
 
-    public function getMessages(): Collection
+    public function setLastMessageAt(\DateTimeImmutable $lastMessageAt): static
     {
-        return $this->messages;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
+        $this->lastMessageAt = $lastMessageAt;
+        return $this;
     }
 }
