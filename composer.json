@@ -60,7 +60,7 @@
         "symfony/debug-bundle": "^7",
         "symfony/maker-bundle": "^1.36",
         "symfony/stopwatch": "^7",
-        "symfony/web-profiler-bundle": "^7"
+        "symfony/web-profiler-bundle": "7.3.*"
     },
     "replace": {
         "symfony/polyfill-ctype": "*",
