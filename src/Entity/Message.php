@@ -1,19 +1,11 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace App\Entity;
 
 use App\Repository\MessageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
 class Message
@@ -26,14 +18,14 @@ class Message
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
-    #[ORM\Column]
-    private ?\DateTime $createdAt = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
-    private ?user $sender = null;
+    private ?User $sender = null;
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
-    private ?user $recipient = null;
+    private ?User $recipient = null;
 
     public function getId(): ?int
     {
@@ -48,43 +40,39 @@ class Message
     public function setContent(string $content): static
     {
         $this->content = $content;
-
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTime
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTime $createdAt): static
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
-
         return $this;
     }
 
-    public function getSender(): ?user
+    public function getSender(): ?User
     {
         return $this->sender;
     }
 
-    public function setSender(?user $sender): static
+    public function setSender(?User $sender): static
     {
         $this->sender = $sender;
-
         return $this;
     }
 
-    public function getRecipient(): ?user
+    public function getRecipient(): ?User
     {
         return $this->recipient;
     }
 
-    public function setRecipient(?user $recipient): static
+    public function setRecipient(?User $recipient): static
     {
         $this->recipient = $recipient;
-
         return $this;
     }
 }
