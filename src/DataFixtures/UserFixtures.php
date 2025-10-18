@@ -6,14 +6,10 @@ use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 class UserFixtures extends Fixture
 {
-    public function __construct(
-        private readonly UserPasswordHasherInterface $passwordHasher,
-        private readonly EntityManagerInterface $entityManager
-    ) {}
+    public function __construct(private readonly UserPasswordHasherInterface $passwordHasher) {}
 
     public function load(ObjectManager $manager): void
     {
@@ -25,19 +21,13 @@ class UserFixtures extends Fixture
         ];
 
         foreach ($users as [$fullName, $username, $email, $roles]) {
-            if ($this->entityManager->getRepository(User::class)->findOneBy(['username' => $username])) {
-                continue;
-            }
-
             $user = new User();
             $user->setFullName($fullName);
             $user->setUsername($username);
             $user->setEmail($email);
             $user->setRoles($roles);
             $user->setPassword($this->passwordHasher->hashPassword($user, 'motdepasse123'));
-
-            // 🧪 Bonus TomTroc-style
-            $user->setAvatar('images/avatars/' . $username . '.png'); // Assure-toi que le fichier existe
+            $user->setAvatar('images/avatars/' . $username . '.png');
             $user->setCreatedAt(new \DateTimeImmutable('-' . random_int(1, 30) . ' days'));
             $user->setPhoneNumber('+33 6 ' . random_int(10, 99) . ' ' . random_int(10, 99) . ' ' . random_int(10, 99) . ' ' . random_int(10, 99));
 
