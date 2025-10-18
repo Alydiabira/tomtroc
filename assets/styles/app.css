@@ -136,3 +136,76 @@ body {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+
+.conversation-container {
+    max-width: 700px;
+    margin: auto;
+    padding: 20px;
+    background: #fdfdfd;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.messages {
+    margin-bottom: 20px;
+}
+
+.message-row {
+    display: flex;
+    margin-bottom: 15px;
+    align-items: flex-start;
+}
+
+.message-row.sent {
+    flex-direction: row-reverse;
+}
+
+.avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0 10px;
+}
+
+.bubble {
+    max-width: 70%;
+    background: #e0f7fa;
+    padding: 10px 15px;
+    border-radius: 15px;
+    position: relative;
+}
+
+.message-row.received .bubble {
+    background: #fff3e0;
+}
+
+.meta {
+    font-size: 0.85em;
+    color: #555;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.message-form {
+    display: flex;
+    gap: 10px;
+}
+
+.message-form textarea {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    resize: none;
+}
+
+.send-button {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+}
