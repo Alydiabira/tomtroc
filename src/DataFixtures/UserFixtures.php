@@ -25,7 +25,6 @@ class UserFixtures extends Fixture
         ];
 
         foreach ($users as [$fullName, $username, $email, $roles]) {
-            // Skip si déjà en base
             if ($this->entityManager->getRepository(User::class)->findOneBy(['username' => $username])) {
                 continue;
             }
@@ -37,8 +36,13 @@ class UserFixtures extends Fixture
             $user->setRoles($roles);
             $user->setPassword($this->passwordHasher->hashPassword($user, 'motdepasse123'));
 
+            // 🧪 Bonus TomTroc-style
+            $user->setAvatar('images/avatars/' . $username . '.png'); // Assure-toi que le fichier existe
+            $user->setCreatedAt(new \DateTimeImmutable('-' . random_int(1, 30) . ' days'));
+            $user->setPhoneNumber('+33 6 ' . random_int(10, 99) . ' ' . random_int(10, 99) . ' ' . random_int(10, 99) . ' ' . random_int(10, 99));
+
             $manager->persist($user);
-            $this->addReference($username, $user); // utile pour les fixtures liées
+            $this->addReference($username, $user);
         }
 
         $manager->flush();
