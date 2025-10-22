@@ -3,6 +3,8 @@
 {% block body_id 'conversation_view' %}
 
 {% block main %}
+<div class="p-3 rounded-4 message-bubble {{ isMine ? 'bg-primary text-white' : 'bg-light' }}" style="max-width: 70%;">
+
 <div class="container mt-4">
     <h2 class="mb-4">💬 Conversation avec {{ contact.pseudo ?: contact.username }}</h2>
 
@@ -39,4 +41,13 @@
 <script>
     window.scrollTo(0, document.body.scrollHeight);
 </script>
+<script>
+    const form = document.querySelector('form');
+    form.addEventListener('submit', () => {
+        if (window.navigator.vibrate) {
+            window.navigator.vibrate(50); // vibration douce
+        }
+    });
+</script>
+
 {% endblock %}
