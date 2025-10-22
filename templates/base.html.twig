@@ -7,6 +7,8 @@
         <title>{% block title %}TomTroc{% endblock %}</title>
         <link rel="alternate" type="application/rss+xml" title="{{ 'rss.title'|trans }}" href="{{ path('blog_rss') }}">
         <link rel="shortcut icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 
         {#
             Those two blocks defines frontend entrypoint for CSS and JavaScript assets
@@ -23,6 +25,11 @@
 
 
     </head>
+    <script>
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        tooltipTriggerList.forEach(t => new bootstrap.Tooltip(t));
+    </script>
+
 
     <body id="{% block body_id %}{% endblock %}" class="tomtroc-theme {{ is_rtl(app.locale) ? 'rtl' }}">
 
