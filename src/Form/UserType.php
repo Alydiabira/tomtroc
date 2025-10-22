@@ -37,6 +37,11 @@ class UserType extends AbstractType
                 'label' => 'Pseudo',
                 'required' => false,
                 'attr' => ['class' => 'form-control rounded-pill'],
+            ])
+            ->add('availability', TextType::class, [
+                'label' => 'Disponibilité',
+                'required' => false,
+                'attr' => ['class' => 'form-control rounded-pill', 'placeholder' => 'Ex: Week-end, Soirs, Sur rendez-vous…'],
             ]);
             // Tu peux ajouter 'avatar' ici si tu veux gérer l'upload dans ce formulaire
     }
