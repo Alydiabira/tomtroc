@@ -1,18 +1,40 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h2>Messagerie</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">📨 Messagerie</h2>
 
-<div class="sidebar">
-    {% for conversation in conversations %}
-        <div class="conversation-preview">
-            <a href="{{ path('conversation_view', {id: conversation.id}) }}">
-                {{ conversation.user1 == app.user ? conversation.user2.username : conversation.user1.username }}
-                <br><small>Dernier message : {{ conversation.lastMessageAt|date('H:i d/m') }}</small>
-            </a>
-        </div>
+    {% if conversations is empty %}
+        <p class="text-muted">Aucune conversation pour le moment.</p>
     {% else %}
-        <p>Aucune conversation pour le moment.</p>
-    {% endfor %}
+        <div class="list-group">
+            {% for conversation in conversations %}
+                {% set contact = conversation.user1 == app.user ? conversation.user2 : conversation.user1 %}
+                {% set lastMessage = conversation.getLastMessage() %}
+                <a href="{{ path('conversation_view', {id: conversation.id}) }}"
+                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <img src="{{ asset(contact.avatar ?: 'images/avatars/default.jpg') }}"
+                             alt="Avatar"
+                             class="rounded-circle me-3"
+                             width="50" height="50">
+                        <div>
+                            <strong>{{ contact.pseudo ?: contact.username }}</strong><br>
+                            <small class="text-muted">
+                                {{ lastMessage ? lastMessage.content|slice(0, 50) ~ '…' : 'Aucun message' }}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        {% if lastMessage %}
+                            <small class="text-muted">{{ lastMessage.createdAt|ago }}</small>
+                        {% endif %}
+                        {# Préparation pour bulle rouge de messages non lus #}
+                        {# <span class="badge bg-danger rounded-pill ms-2">3</span> #}
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% endif %}
 </div>
 {% endblock %}
