@@ -20,6 +20,12 @@
                 <p class="fw-bold">BIBLIOTHÈQUE</p>
                 <p>{{ user.books|length }} livres</p>
                 <a href="{{ path('user_books') }}" class="btn btn-outline-primary rounded-pill">Voir mes livres</a>
+                {% if app.user and app.user.id != user.id %}
+                    <a href="{{ path('start_conversation', {id: user.id}) }}" class="btn btn-primary rounded-pill mt-2">
+                        <twig:ux:icon name="tabler:message"/> Envoyer un message
+                    </a>
+                {% endif %}
+
             </div>
         </div>
 
