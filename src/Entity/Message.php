@@ -93,4 +93,40 @@ class Message
         $this->conversation = $conversation;
         return $this;
     }
+
+    // ✅ Avatar du sender
+    public function getSenderAvatar(): string
+    {
+        return $this->sender && $this->sender->getAvatar()
+            ? $this->sender->getAvatar()
+            : 'images/avatars/default.jpg';
+    }
+
+    // ✅ Avatar du destinataire
+    public function getRecipientAvatar(): string
+    {
+        return $this->recipient && $this->recipient->getAvatar()
+            ? $this->recipient->getAvatar()
+            : 'images/avatars/default.jpg';
+    }
+
+    // ✅ Est-ce que ce message a été envoyé par l'utilisateur courant ?
+    public function isMine(User $currentUser): bool
+    {
+        return $this->sender && $this->sender->getId() === $currentUser->getId();
+    }
+
+    // ✅ Classes CSS pour la bulle
+    public function getBubbleClasses(User $currentUser): string
+    {
+        return $this->isMine($currentUser)
+            ? 'bg-primary text-white justify-content-end'
+            : 'bg-light justify-content-start';
+    }
+
+    // ✅ Date formatée pour affichage
+    public function getFormattedDate(): string
+    {
+        return $this->createdAt ? $this->createdAt->format('H:i d/m/Y') : '';
+    }
 }
