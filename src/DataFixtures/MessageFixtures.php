@@ -18,10 +18,10 @@ class MessageFixtures extends Fixture implements DependentFixtureInterface
 
         /** @var User[] $users */
         $users = [
-            'aly' => $this->getReference('aly'),
-            'tom' => $this->getReference('tom'),
-            'nathalie' => $this->getReference('nathalie'),
-            'sasa94' => $this->getReference('sasa94'),
+            'aly' => $this->getReference('aly', User::class),
+            'tom' => $this->getReference('tom', User::class),
+            'nathalie' => $this->getReference('nathalie', User::class),
+            'sasa94' => $this->getReference('sasa94', User::class),
         ];
 
         $pairs = [
