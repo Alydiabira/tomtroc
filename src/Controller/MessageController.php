@@ -39,7 +39,8 @@ final class MessageController extends AbstractController
         ]);
     }
 
-    #[Route('/messagerie/{id}', name: 'conversation_view')]
+    #[Route('/messagerie/{id}', name: 'conversation_view', requirements: ['id' => '\d+'])]
+
     public function viewConversation(
         Conversation $conversation,
         Request $request,
@@ -56,7 +57,10 @@ final class MessageController extends AbstractController
         }
 
         $contact = $conversation->getOtherParticipant($user);
-        $messages = $messageRepo->findBy(['conversation' => $conversation], ['createdAt' => 'ASC']);
+$messages = $messageRepo->findBy(['conversation' => $conversation], ['createdAt' => 'ASC']);
+
+$conversations = $conversationRepo->findRecentWithLastMessage($user);
+dd($conversations); // ✅ ici tu vois les conversations dès l’ouverture
 
         // ✅ Marquer les messages comme lus AVANT affichage
         $hasChanges = false;
@@ -88,8 +92,6 @@ final class MessageController extends AbstractController
 
             return $this->redirectToRoute('conversation_view', ['id' => $conversation->getId()]);
         }
-        dd($messages);
-
 
         return $this->render('message/conversation.html.twig', [
             'conversation' => $conversation,
