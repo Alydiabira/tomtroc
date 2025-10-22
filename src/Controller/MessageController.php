@@ -7,6 +7,7 @@ use App\Entity\Message;
 use App\Entity\User;
 use App\Form\MessageType;
 use App\Repository\ConversationRepository;
+use App\Repository\MessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,28 +45,39 @@ final class MessageController extends AbstractController
     public function viewConversation(
         Conversation $conversation,
         Request $request,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        MessageRepository $messageRepo
     ): Response {
         $user = $this->getUser();
         if (!$user instanceof User) {
             throw $this->createAccessDeniedException();
         }
 
+        // Vérifie que l'utilisateur fait bien partie de la conversation
+        if ($conversation->getUser1() !== $user && $conversation->getUser2() !== $user) {
+            throw $this->createAccessDeniedException('Accès interdit à cette conversation.');
+        }
+
+        $messages = $messageRepo->findBy(
+            ['conversation' => $conversation],
+            ['createdAt' => 'ASC']
+        );
+
+        $contact = $conversation->getUser1() === $user
+            ? $conversation->getUser2()
+            : $conversation->getUser1();
+
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $recipient = $conversation->getUser1() === $user
-                ? $conversation->getUser2()
-                : $conversation->getUser1();
-
             $message->setSender($user);
-            $message->setRecipient($recipient);
+            $message->setRecipient($contact);
             $message->setConversation($conversation);
             $message->setCreatedAt(new \DateTimeImmutable());
 
-            $conversation->setLastMessageAt(new \DateTimeImmutable());
+            $conversation->setLastMessageAt($message->getCreatedAt());
 
             $em->persist($message);
             $em->flush();
@@ -75,6 +87,8 @@ final class MessageController extends AbstractController
 
         return $this->render('message/conversation.html.twig', [
             'conversation' => $conversation,
+            'messages' => $messages,
+            'contact' => $contact,
             'form' => $form->createView(),
         ]);
     }
