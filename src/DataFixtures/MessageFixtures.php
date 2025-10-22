@@ -18,10 +18,10 @@ class MessageFixtures extends Fixture implements DependentFixtureInterface
 
         /** @var User[] $users */
         $users = [
-            'aly' => $this->getReference('user_aly'),
-            'tom' => $this->getReference('user_tom'),
-            'nathalie' => $this->getReference('user_nathalie'),
-            'sasa94' => $this->getReference('user_sasa94'),
+            'aly' => $this->getReference('aly'),
+            'tom' => $this->getReference('tom'),
+            'nathalie' => $this->getReference('nathalie'),
+            'sasa94' => $this->getReference('sasa94'),
         ];
 
         $pairs = [
@@ -35,9 +35,8 @@ class MessageFixtures extends Fixture implements DependentFixtureInterface
             $conversation = new Conversation();
             $conversation->setUser1($users[$userA]);
             $conversation->setUser2($users[$userB]);
-            $conversation->setLastMessageAt(new \DateTimeImmutable('-' . random_int(1, 5) . ' hours'));
 
-            $manager->persist($conversation);
+            $lastMessageTime = null;
 
             for ($i = 0; $i < 5; $i++) {
                 $sender = $i % 2 === 0 ? $users[$userA] : $users[$userB];
@@ -55,10 +54,20 @@ class MessageFixtures extends Fixture implements DependentFixtureInterface
                     "Top ton annonce ! Tu cherches quoi en échange ? 🔄",
                     $faker->realTextBetween(40, 120),
                 ]));
-                $message->setCreatedAt((new \DateTimeImmutable())->modify('-' . ($i * 10) . ' minutes'));
+
+                $createdAt = (new \DateTimeImmutable())->modify('-' . ($i * 10) . ' minutes');
+                $message->setCreatedAt($createdAt);
+                $lastMessageTime = $createdAt;
 
                 $manager->persist($message);
             }
+
+            // Mise à jour du champ lastMessageAt avec le dernier message
+            $conversation->setLastMessageAt($lastMessageTime);
+            $manager->persist($conversation);
+
+            // Ajout d'une référence si tu veux la réutiliser ailleurs
+            $this->addReference('conv_' . $userA . '_' . $userB, $conversation);
         }
 
         $manager->flush();
