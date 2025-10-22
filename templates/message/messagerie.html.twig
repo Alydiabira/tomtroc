@@ -27,7 +27,7 @@
                     </div>
                     <div class="text-end">
                         {% if lastMessage %}
-                            <small class="text-muted">{{ lastMessage.createdAt|ago }}</small>
+                            <small class="text-muted">{{ lastMessage.createdAt|date }}</small>
                         {% endif %}
                         {# Préparation pour bulle rouge de messages non lus #}
                         {# <span class="badge bg-danger rounded-pill ms-2">3</span> #}
