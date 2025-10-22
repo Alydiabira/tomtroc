@@ -88,6 +88,8 @@ final class MessageController extends AbstractController
 
             return $this->redirectToRoute('conversation_view', ['id' => $conversation->getId()]);
         }
+        dd($messages);
+
 
         return $this->render('message/conversation.html.twig', [
             'conversation' => $conversation,
