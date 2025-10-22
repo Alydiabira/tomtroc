@@ -21,9 +21,7 @@ final class MessageController extends AbstractController
     #[Route('/message', name: 'app_message')]
     public function index(): Response
     {
-        return $this->render('message/index.html.twig', [
-            'controller_name' => 'MessageController',
-        ]);
+        return $this->render('message/index.html.twig');
     }
 
     #[Route('/messagerie', name: 'messagerie')]
@@ -34,7 +32,7 @@ final class MessageController extends AbstractController
             throw $this->createAccessDeniedException('Vous devez être connecté pour accéder à la messagerie.');
         }
 
-        $conversations = $conversationRepo->findByUser($user);
+        $conversations = $conversationRepo->findRecentWithLastMessage($user);
 
         return $this->render('message/messagerie.html.twig', [
             'conversations' => $conversations,
@@ -53,19 +51,12 @@ final class MessageController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        // Vérifie que l'utilisateur fait bien partie de la conversation
-        if ($conversation->getUser1() !== $user && $conversation->getUser2() !== $user) {
+        if (!$conversation->isParticipant($user)) {
             throw $this->createAccessDeniedException('Accès interdit à cette conversation.');
         }
 
-        $messages = $messageRepo->findBy(
-            ['conversation' => $conversation],
-            ['createdAt' => 'ASC']
-        );
-
-        $contact = $conversation->getUser1() === $user
-            ? $conversation->getUser2()
-            : $conversation->getUser1();
+        $contact = $conversation->getOtherParticipant($user);
+        $messages = $messageRepo->findBy(['conversation' => $conversation], ['createdAt' => 'ASC']);
 
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
