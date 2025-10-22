@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
 use App\Entity\Conversation;
 
-
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
 class Message
 {
@@ -23,13 +22,16 @@ class Message
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'messages')]
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $sender = null;
 
-    #[ORM\ManyToOne(inversedBy: 'messages')]
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $recipient = null;
 
-    #[ORM\ManyToOne(inversedBy: 'messages')]
+    #[ORM\ManyToOne(targetEntity: Conversation::class, inversedBy: 'messages')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Conversation $conversation = null;
 
     public function getId(): ?int
@@ -78,18 +80,17 @@ class Message
     public function setRecipient(?User $recipient): static
     {
         $this->recipient = $recipient;
-        return 
-        $this;
+        return $this;
     }
 
     public function getConversation(): ?Conversation
-{
-    return $this->conversation;
-}
+    {
+        return $this->conversation;
+    }
 
-public function setConversation(?Conversation $conversation): static
-{
-    $this->conversation = $conversation;
-    return $this;
-}
+    public function setConversation(?Conversation $conversation): static
+    {
+        $this->conversation = $conversation;
+        return $this;
+    }
 }
