@@ -27,14 +27,33 @@
                     </div>
                     <div class="text-end">
                         {% if lastMessage %}
-                            <small class="text-muted">{{ lastMessage.createdAt|date }}</small>
+                            <small class="text-muted">{{ lastMessage.createdAt|date('H:i d/m/Y') }}</small>
                         {% endif %}
-                        {# Préparation pour bulle rouge de messages non lus #}
-                        {# <span class="badge bg-danger rounded-pill ms-2">3</span> #}
+
+                        {% if conversation.getUnreadCount(app.user) > 0 %}
+                            <span class="badge bg-danger rounded-pill ms-2 bounce-badge">
+                                {{ conversation.getUnreadCount(app.user) }}
+                            </span>
+                        {% endif %}
                     </div>
                 </a>
             {% endfor %}
         </div>
     {% endif %}
 </div>
+
+<style>
+.bounce-badge {
+    animation: bounce 0.6s ease infinite alternate;
+}
+
+@keyframes bounce {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-4px);
+    }
+}
+</style>
 {% endblock %}
