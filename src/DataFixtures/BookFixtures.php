@@ -35,7 +35,10 @@ class BookFixtures extends Fixture implements DependentFixtureInterface
                 $book->setDescription($faker->realTextBetween(100, 200));
                 $book->setGenre($faker->randomElement($genres));
                 $book->setOwner($user);
-                $book->setCreatedAt($faker->dateTimeImmutable('-1 week'));
+                $book->setCreatedAt(\DateTimeImmutable::createFromMutable(
+                    $faker->dateTimeBetween('-1 week', 'now')
+                ));
+
 
                 $manager->persist($book);
             }
