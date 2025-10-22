@@ -58,6 +58,19 @@ final class MessageController extends AbstractController
         $contact = $conversation->getOtherParticipant($user);
         $messages = $messageRepo->findBy(['conversation' => $conversation], ['createdAt' => 'ASC']);
 
+        // ✅ Marquer les messages comme lus AVANT affichage
+        $hasChanges = false;
+        foreach ($messages as $msg) {
+            if ($msg->getRecipient() === $user && !$msg->isRead()) {
+                $msg->setIsRead(true);
+                $em->persist($msg);
+                $hasChanges = true;
+            }
+        }
+        if ($hasChanges) {
+            $em->flush();
+        }
+
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
@@ -83,6 +96,7 @@ final class MessageController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
 
     #[Route('/start-conversation/{id}', name: 'start_conversation')]
     public function startConversation(
