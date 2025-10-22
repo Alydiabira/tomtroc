@@ -33,6 +33,19 @@ class Message
     #[ORM\ManyToOne(targetEntity: Conversation::class, inversedBy: 'messages')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Conversation $conversation = null;
+    #[ORM\Column(type: 'boolean')]
+    private bool $isRead = false;
+
+    public function isRead(): bool
+    {
+        return $this->isRead;
+    }
+
+    public function setIsRead(bool $isRead): static
+    {
+        $this->isRead = $isRead;
+        return $this;
+    }
 
     public function getId(): ?int
     {
