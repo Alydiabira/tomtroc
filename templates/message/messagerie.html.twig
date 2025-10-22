@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h2>Messagerie</h2>
+
+<div class="sidebar">
+    {% for conversation in conversations %}
+        <div class="conversation-preview">
+            <a href="{{ path('conversation_view', {id: conversation.id}) }}">
+                {{ conversation.user1 == app.user ? conversation.user2.username : conversation.user1.username }}
+                <br><small>Dernier message : {{ conversation.lastMessageAt|date('H:i d/m') }}</small>
+            </a>
+        </div>
+    {% else %}
+        <p>Aucune conversation pour le moment.</p>
+    {% endfor %}
+</div>
+{% endblock %}
