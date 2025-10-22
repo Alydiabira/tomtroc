@@ -5,6 +5,7 @@
 {% block main %}
 <div class="container mt-4">
     <h2 class="mb-4">💬 Conversation avec {{ contact.pseudo ?: contact.username }}</h2>
+<h1>Test affichage conversation</h1>
 
     <div class="card shadow-sm rounded-4">
         <div class="card-body">
@@ -16,7 +17,7 @@
                     {% endif %}
                     <div class="p-3 rounded-4 {{ isMine ? 'bg-primary text-white' : 'bg-light' }}" style="max-width: 70%;">
                         <p class="mb-1">{{ message.content }}</p>
-                        <small class="text-muted">{{ message.createdAt|ago }}</small>
+                        <small class="text-muted">{{ message.createdAt|date('H:i d/m/Y') }}</small>
                     </div>
                     {% if isMine %}
                         <img src="{{ asset(app.user.avatar ?: 'images/avatars/default.jpg') }}" class="rounded-circle ms-2" width="40" height="40" alt="Avatar">
@@ -27,12 +28,15 @@
             {% endfor %}
         </div>
     </div>
-
-    <form method="POST" action="{{ path('conversation_reply', {id: conversation.id}) }}" class="mt-4">
+    <form method="POST" action="{{ path('conversation_view', {id: conversation.id}) }}">
         <div class="input-group">
             <input type="text" name="content" class="form-control rounded-pill" placeholder="Écris ton message…" required>
             <button class="btn btn-primary rounded-pill ms-2">Envoyer</button>
         </div>
     </form>
 </div>
+
+<script>
+    window.scrollTo(0, document.body.scrollHeight);
+</script>
 {% endblock %}
