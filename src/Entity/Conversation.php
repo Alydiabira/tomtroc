@@ -107,4 +107,11 @@ class Conversation
         $this->lastMessageAt = $lastMessageAt;
         return $this;
     }
+    public function getUnreadCount(User $user): int
+{
+    return $this->messages->filter(function (Message $message) use ($user) {
+        return $message->getRecipient() === $user && !$message->isRead();
+    })->count();
+}
+
 }
