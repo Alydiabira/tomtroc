@@ -50,4 +50,15 @@ class ConversationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+    public function findRecentWithLastMessage(User $user): array
+{
+    return $this->createQueryBuilder('c')
+        ->leftJoin('c.messages', 'm')
+        ->addSelect('m')
+        ->where('c.user1 = :user OR c.user2 = :user')
+        ->setParameter('user', $user)
+        ->orderBy('c.lastMessageAt', 'DESC')
+        ->getQuery()
+        ->getResult();
+}
 }
