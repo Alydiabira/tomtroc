@@ -1,36 +1,38 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-<div class="conversation-container">
-    <div class="header">
-        <h2>💬 Conversation avec 
-            {{ conversation.user1 == app.user ? conversation.user2.username : conversation.user1.username }}
-        </h2>
+{% block body_id 'conversation_view' %}
+
+{% block main %}
+<div class="container mt-4">
+    <h2 class="mb-4">💬 Conversation avec {{ contact.pseudo ?: contact.username }}</h2>
+
+    <div class="card shadow-sm rounded-4">
+        <div class="card-body">
+            {% for message in messages %}
+                {% set isMine = message.sender.id == app.user.id %}
+                <div class="d-flex mb-3 {{ isMine ? 'justify-content-end' : 'justify-content-start' }}">
+                    {% if not isMine %}
+                        <img src="{{ asset(message.sender.avatar ?: 'images/avatars/default.jpg') }}" class="rounded-circle me-2" width="40" height="40" alt="Avatar">
+                    {% endif %}
+                    <div class="p-3 rounded-4 {{ isMine ? 'bg-primary text-white' : 'bg-light' }}" style="max-width: 70%;">
+                        <p class="mb-1">{{ message.content }}</p>
+                        <small class="text-muted">{{ message.createdAt|ago }}</small>
+                    </div>
+                    {% if isMine %}
+                        <img src="{{ asset(app.user.avatar ?: 'images/avatars/default.jpg') }}" class="rounded-circle ms-2" width="40" height="40" alt="Avatar">
+                    {% endif %}
+                </div>
+            {% else %}
+                <p class="text-muted">Aucun message pour le moment.</p>
+            {% endfor %}
+        </div>
     </div>
 
-    <div class="chat-window">
-        {% for message in messages %}
-            <div class="message-row {{ message.sender == app.user ? 'sent' : 'received' }}">
-                <div class="avatar">
-                    <img src="{{ message.sender.avatarUrl ?? '/images/default-avatar.png' }}" alt="Avatar">
-                </div>
-                <div class="bubble">
-                    <p>{{ message.content }}</p>
-                    <span class="timestamp">{{ message.createdAt|date('H:i d/m') }}</span>
-                </div>
-            </div>
-        {% else %}
-            <p class="no-message">Aucun message pour le moment.</p>
-        {% endfor %}
-    </div>
-
-    <div class="message-form">
-        {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
-            <div class="form-group">
-                {{ form_widget(form.content, {'attr': {'placeholder': 'Tapez votre message ici...', 'class': 'form-control'}}) }}
-            </div>
-            <button type="submit" class="btn btn-success">Envoyer</button>
-        {{ form_end(form) }}
-    </div>
+    <form method="POST" action="{{ path('conversation_reply', {id: conversation.id}) }}" class="mt-4">
+        <div class="input-group">
+            <input type="text" name="content" class="form-control rounded-pill" placeholder="Écris ton message…" required>
+            <button class="btn btn-primary rounded-pill ms-2">Envoyer</button>
+        </div>
+    </form>
 </div>
 {% endblock %}
