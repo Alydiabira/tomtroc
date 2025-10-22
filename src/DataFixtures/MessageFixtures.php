@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Conversation;
 use App\Entity\Message;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -15,11 +16,12 @@ class MessageFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Factory::create('fr_FR');
 
+        /** @var User[] $users */
         $users = [
-            'aly' => $this->getReference('aly'),
-            'tom' => $this->getReference('tom'),
-            'nathalie' => $this->getReference('nathalie'),
-            'sasa94' => $this->getReference('sasa94'),
+            'aly' => $this->getReference('user_aly'),
+            'tom' => $this->getReference('user_tom'),
+            'nathalie' => $this->getReference('user_nathalie'),
+            'sasa94' => $this->getReference('user_sasa94'),
         ];
 
         $pairs = [
