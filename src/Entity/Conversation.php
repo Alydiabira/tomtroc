@@ -31,6 +31,22 @@ class Conversation
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeImmutable $lastMessageAt = null;
+    public function isParticipant(User $user): bool
+    {
+        return $this->user1 === $user || $this->user2 === $user;
+    }
+
+    public function getOtherParticipant(User $user): ?User
+    {
+        if ($this->user1 === $user) return $this->user2;
+        if ($this->user2 === $user) return $this->user1;
+        return null;
+    }
+
+    public function getLastMessage(): ?Message
+    {
+        return $this->messages->last() ?: null;
+    }
 
     public function __construct()
     {
