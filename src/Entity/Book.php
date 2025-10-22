@@ -1,29 +1,43 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+
 
 namespace App\Entity;
 
-use App\Repository\BookRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
 
-#[ORM\Entity(repositoryClass: BookRepository::class)]
+#[ORM\Entity]
 class Book
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
+
     #[ORM\Column(type: Types::STRING)]
     private ?string $title = null;
+
+    #[ORM\Column(type: Types::STRING)]
+    private ?string $author = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $description = null;
+
+    #[ORM\Column(type: Types::STRING, length: 50)]
+    private ?string $genre = null;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    private \DateTimeImmutable $createdAt;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'books')]
+    private ?User $owner = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getTitle(): ?string
     {
@@ -36,15 +50,49 @@ class Book
         return $this;
     }
 
-
-    public function getId(): ?int
+    public function getAuthor(): ?string
     {
-        return $this->id;
+        return $this->author;
     }
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'books')]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?User $owner = null;
+    public function setAuthor(string $author): self
+    {
+        $this->author = $author;
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    public function getGenre(): ?string
+    {
+        return $this->genre;
+    }
+
+    public function setGenre(string $genre): self
+    {
+        $this->genre = $genre;
+        return $this;
+    }
+
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
 
     public function getOwner(): ?User
     {
@@ -56,5 +104,4 @@ class Book
         $this->owner = $owner;
         return $this;
     }
-
 }
