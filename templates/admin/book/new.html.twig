@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+{% block body_id 'book_new' %}
+
+{% block main %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg rounded-4">
+                <div class="card-body px-5 py-4">
+                    <h2 class="h4 mb-4 text-center">📘 Ajouter un nouveau livre</h2>
+
+                    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                {{ form_row(form.title, {'attr': {'class': 'form-control rounded-pill'}}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.author, {'attr': {'class': 'form-control rounded-pill'}}) }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form_row(form.description, {
+                                    'attr': {
+                                        'class': 'form-control rounded-4',
+                                        'rows': '4',
+                                        'placeholder': 'Résumé ou détails du livre…'
+                                    }
+                                }) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.coverImage, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.available, {'attr': {'class': 'form-check-input'}}) }}
+                            </div>
+                        </div>
+
+                        <button class="btn btn-success w-100 rounded-pill mt-4">📚 Ajouter ce livre</button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
