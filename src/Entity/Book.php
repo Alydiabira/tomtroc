@@ -34,6 +34,20 @@ class Book
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'books')]
     private ?User $owner = null;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $available = true;
+
+    public function isAvailable(): bool
+    {
+        return $this->available;
+    }
+
+    public function setAvailable(bool $available): self
+    {
+        $this->available = $available;
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
