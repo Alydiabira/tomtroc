@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{% block body_id 'book_index' %}
+
+{% block main %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">📚 Nos livres à l’échange</h2>
+
+    {% if books|length > 0 %}
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            {% for book in books %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm rounded-4">
+                        {% if book.coverImage %}
+                            <img src="{{ asset('uploads/covers/' ~ book.coverImage) }}" class="card-img-top rounded-top-4" alt="{{ book.title }}">
+                        {% else %}
+                            <img src="{{ asset('images/default-book.jpg') }}" class="card-img-top rounded-top-4" alt="Livre">
+                        {% endif %}
+
+                        <div class="card-body">
+                            <h5 class="card-title">{{ book.title }}</h5>
+                            <p class="card-text text-muted">{{ book.author }}</p>
+                            <span class="badge 
+                                {% if book.available %}
+                                    bg-success
+                                {% else %}
+                                    bg-secondary
+                                {% endif %}
+                            ">
+                                {{ book.available ? 'Disponible' : 'Indisponible' }}
+                            </span>
+                        </div>
+
+                        <div class="card-footer bg-transparent border-0 text-end">
+                            <a href="{{ path('book_show', {id: book.id}) }}" class="btn btn-sm btn-outline-primary rounded-pill">Voir</a>
+                            {% if app.user and app.user.id == book.owner.id %}
+                                <a href="{{ path('book_edit', {id: book.id}) }}" class="btn btn-sm btn-outline-secondary rounded-pill">Modifier</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted text-center">Aucun livre disponible pour le moment.</p>
+    {% endif %}
+</div>
+{% endblock %}
