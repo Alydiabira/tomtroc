@@ -1,5 +1,30 @@
 {% extends 'base.html.twig' %}
+
 {% block body_id 'book_index' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        body#book_index {
+            background: linear-gradient(to bottom, #fdfcfb, #e2d1c3);
+        }
+        .card:hover {
+            transform: scale(1.02);
+            transition: transform 0.2s ease-in-out;
+        }
+        .owner-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+        .owner-info img {
+            width: 32px;
+            height: 32px;
+            object-fit: cover;
+        }
+    </style>
+{% endblock %}
 
 {% block main %}
 <div class="container mt-5">
@@ -19,6 +44,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ book.title }}</h5>
                             <p class="card-text text-muted">{{ book.author }}</p>
+
                             <span class="badge 
                                 {% if book.available %}
                                     bg-success
@@ -28,13 +54,28 @@
                             ">
                                 {{ book.available ? 'Disponible' : 'Indisponible' }}
                             </span>
+
+                            <p class="mt-2 mb-0">
+                                <small class="text-muted">Ajouté le {{ book.createdAt|date('d M Y') }}</small>
+                            </p>
                         </div>
 
-                        <div class="card-footer bg-transparent border-0 text-end">
-                            <a href="{{ path('book_show', {id: book.id}) }}" class="btn btn-sm btn-outline-primary rounded-pill">Voir</a>
-                            {% if app.user and app.user.id == book.owner.id %}
-                                <a href="{{ path('book_edit', {id: book.id}) }}" class="btn btn-sm btn-outline-secondary rounded-pill">Modifier</a>
-                            {% endif %}
+                        <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center">
+                            <div class="owner-info">
+                                {% if book.owner.avatar %}
+                                    <img src="{{ asset('uploads/avatars/' ~ book.owner.avatar) }}" alt="{{ book.owner.fullname }}" class="rounded-circle">
+                                {% else %}
+                                    <img src="{{ asset('images/default-avatar.png') }}" alt="Avatar" class="rounded-circle">
+                                {% endif %}
+                                <span class="text-muted">{{ book.owner.fullname }}</span>
+                            </div>
+
+                            <div>
+                                <a href="{{ path('book_show', {id: book.id}) }}" class="btn btn-sm btn-outline-primary rounded-pill" aria-label="Voir le livre {{ book.title }}">Voir</a>
+                                {% if app.user and app.user.id == book.owner.id %}
+                                    <a href="{{ path('book_edit', {id: book.id}) }}" class="btn btn-sm btn-outline-secondary rounded-pill" aria-label="Modifier le livre {{ book.title }}">Modifier</a>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
