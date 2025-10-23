@@ -1,32 +1,28 @@
-{% extends 'base.html.twig' %}
-
-{% block body_id 'conversation_view' %}
-
 {% block main %}
-<div class="p-3 rounded-4 message-bubble {{ isMine ? 'bg-primary text-white' : 'bg-light' }}" style="max-width: 70%;">
-
 <div class="container mt-4">
     <h2 class="mb-4">💬 Conversation avec {{ contact.pseudo ?: contact.username }}</h2>
 
     <div class="card shadow-sm rounded-4">
         <div class="card-body">
-            {% for message in messages %}
-                {% set isMine = message.isMine(app.user) %}
-                <div class="d-flex mb-3 {{ isMine ? 'justify-content-end' : 'justify-content-start' }}">
-                    {% if not isMine %}
-                        <img src="{{ asset(message.getSenderAvatar()) }}" class="rounded-circle me-2" width="40" height="40" alt="Avatar">
-                    {% endif %}
-                    <div class="p-3 rounded-4 {{ isMine ? 'bg-primary text-white' : 'bg-light' }}" style="max-width: 70%;">
-                        <p class="mb-1">{{ message.content }}</p>
-                        <small class="text-muted">{{ message.getFormattedDate() }}</small>
+            {% if messages|length > 0 %}
+                {% for message in messages %}
+                    {% set isMine = message.isMine(app.user) %}
+                    <div class="d-flex mb-3 {{ isMine ? 'justify-content-end' : 'justify-content-start' }}">
+                        {% if not isMine %}
+                            <img src="{{ asset(message.getSenderAvatar()) }}" class="rounded-circle me-2" width="40" height="40" alt="Avatar">
+                        {% endif %}
+                        <div class="p-3 rounded-4 {{ isMine ? 'bg-primary text-white' : 'bg-light' }}" style="max-width: 70%;">
+                            <p class="mb-1">{{ message.content }}</p>
+                            <small class="text-muted">{{ message.getFormattedDate() }}</small>
+                        </div>
+                        {% if isMine %}
+                            <img src="{{ asset(message.getSenderAvatar()) }}" class="rounded-circle ms-2" width="40" height="40" alt="Avatar">
+                        {% endif %}
                     </div>
-                    {% if isMine %}
-                        <img src="{{ asset(message.getSenderAvatar()) }}" class="rounded-circle ms-2" width="40" height="40" alt="Avatar">
-                    {% endif %}
-                </div>
+                {% endfor %}
             {% else %}
                 <p class="text-muted">Aucun message pour le moment.</p>
-            {% endfor %}
+            {% endif %}
         </div>
     </div>
 
@@ -37,17 +33,4 @@
         </div>
     </form>
 </div>
-
-<script>
-    window.scrollTo(0, document.body.scrollHeight);
-</script>
-<script>
-    const form = document.querySelector('form');
-    form.addEventListener('submit', () => {
-        if (window.navigator.vibrate) {
-            window.navigator.vibrate(50); // vibration douce
-        }
-    });
-</script>
-
 {% endblock %}
