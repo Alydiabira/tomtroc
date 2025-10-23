@@ -1,19 +1,14 @@
-# These lines define a route using YAML configuration. The controller used by
-# the route (FrameworkBundle:Template:template) is a convenient shortcut when
-# the template can be rendered without executing any logic in your own controller.
-# See https://symfony.com/doc/current/templates.html#rendering-a-template-directly-from-a-route
+# Page d’accueil rendue par un contrôleur dynamique (recommandé)
 homepage:
-    path: /{_locale}
-    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
-    defaults:
-        template: default/homepage.html.twig
-        _locale: '%app.locale%'
+    path: /
+    controller: App\Controller\HomeController::index
 
+# Chargement automatique des contrôleurs avec attributs
 controllers:
-    resource:
-        path: '../src/Controller/'
-        namespace: App\Controller
+    resource: '../src/Controller/'
+    namespace: App\Controller
     type: attribute
-    prefix: /{_locale}
+    # Si tu veux des URLs multilingues comme /fr/blog, décommente la ligne ci-dessous
+    # prefix: /{_locale}
     defaults:
         _locale: '%app.locale%'
