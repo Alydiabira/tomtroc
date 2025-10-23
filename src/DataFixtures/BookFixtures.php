@@ -38,6 +38,8 @@ class BookFixtures extends Fixture implements DependentFixtureInterface
                 $book->setCreatedAt(\DateTimeImmutable::createFromMutable(
                     $faker->dateTimeBetween('-1 week', 'now')
                 ));
+                $book->setAvailable($faker->boolean(80)); // 80% de chances que le livre soit dispo
+
 
 
                 $manager->persist($book);
