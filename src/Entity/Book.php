@@ -36,6 +36,20 @@ class Book
 
     #[ORM\Column(type: 'boolean')]
     private bool $available = true;
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $coverImage = null;
+
+    public function getCoverImage(): ?string
+    {
+        return $this->coverImage;
+    }
+
+    public function setCoverImage(?string $coverImage): self
+    {
+        $this->coverImage = $coverImage;
+        return $this;
+    }
+
 
     public function isAvailable(): bool
     {
