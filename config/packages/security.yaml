@@ -21,7 +21,7 @@ security:
                 login_path: app_login
                 check_path: app_login
                 enable_csrf: true
-                default_target_path: homepage
+                default_target_path: blog_index
 
             remember_me:
                 secret: '%kernel.secret%'
@@ -29,7 +29,7 @@ security:
                 #always_remember_me: true
 
             logout:
-                target: homepage
+                target: blog_index
                 enable_csrf: true
 
             entry_point: form_login
