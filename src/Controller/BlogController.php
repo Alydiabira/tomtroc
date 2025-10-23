@@ -65,7 +65,9 @@ final class BlogController extends AbstractController
         return $this->render('blog/index.'.$_format.'.twig', [
             'paginator' => $latestPosts,
             'tagName' => $tag?->getName(),
+            'books' => $latestPosts, // 👈 ajout essentiel pour éviter l'erreur Twig
         ]);
+
     }
 
     /**
