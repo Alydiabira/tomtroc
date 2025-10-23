@@ -6,6 +6,14 @@ body {
   padding: 0;
 }
 
+
+@media (min-width: 576px) {
+    .col-sm-9 {
+        flex: 0 0 auto;
+        /* width: 75%; */
+    }
+}
+
 html {
   margin: 0;
   padding: 0;
