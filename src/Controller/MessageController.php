@@ -57,10 +57,10 @@ final class MessageController extends AbstractController
         }
 
         $contact = $conversation->getOtherParticipant($user);
-$messages = $messageRepo->findBy(['conversation' => $conversation], ['createdAt' => 'ASC']);
-
-$conversations = $conversationRepo->findRecentWithLastMessage($user);
-dd($conversations); // ✅ ici tu vois les conversations dès l’ouverture
+        $messages = $messageRepo->findBy(['conversation' => $conversation], ['createdAt' => 'ASC']);
+        $conversationRepo = $em->getRepository(Conversation::class);
+        $conversations = $conversationRepo->findRecentWithLastMessage($user);
+        // dd($conversations); // ✅ ici tu vois les conversations dès l’ouverture
 
         // ✅ Marquer les messages comme lus AVANT affichage
         $hasChanges = false;
