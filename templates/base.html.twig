@@ -13,6 +13,7 @@
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
+    
 </head>
 
 <body id="{% block body_id %}{% endblock %}" class="tomtroc-theme {{ is_rtl(app.request.locale) ? 'rtl' }}">
@@ -93,7 +94,7 @@
         </header>
     {% endblock %}
 
-    <main class="container-fluid my-4">
+    <main class="container-fluid px-0 py-0">
         <div class="row">
             <div id="main" class="col-sm-9">
                 {{ include('default/_flash_messages.html.twig') }}
