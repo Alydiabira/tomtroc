@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Supprimer le livre{% endblock %}
+{% block body_id 'admin_book_delete' %}
+
+{% block main %}
+<div class="container mt-5">
+    <div class="alert alert-warning rounded-4 shadow-sm">
+        <h2 class="text-center mb-4">⚠️ Confirmation de suppression</h2>
+        <p class="text-center">
+            Êtes-vous sûr de vouloir supprimer le livre <strong>{{ book.title }}</strong> de <em>{{ book.author }}</em> ?
+        </p>
+        <p class="text-center text-muted">
+            Cette action est irréversible. Le livre sera retiré de la plateforme.
+        </p>
+
+        <form method="post" action="{{ path('admin_book_delete', {id: book.id, _locale: app.request.locale}) }}" class="text-center">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ book.id) }}">
+            <button type="submit" class="btn btn-danger rounded-pill me-2">Oui, supprimer</button>
+            <a href="{{ path('admin_book_edit', {id: book.id, _locale: app.request.locale}) }}" class="btn btn-outline-secondary rounded-pill">Annuler</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
