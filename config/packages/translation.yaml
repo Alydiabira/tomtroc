@@ -1,16 +1,17 @@
-# See https://symfony.com/doc/current/translation.html
+# config/packages/translation.yaml
 framework:
-    default_locale: '%app.locale%'
+    default_locale: fr
     translator:
-        # Translations are defined using the ICU Message Format
-        # See https://symfony.com/doc/current/translation/message_format.html
         default_path: '%kernel.project_dir%/translations'
+        fallbacks:
+            - fr
         providers:
-#            crowdin:
-#                dsn: '%env(CROWDIN_DSN)%'
-#            loco:
-#                dsn: '%env(LOCO_DSN)%'
-#            lokalise:
-#                dsn: '%env(LOKALISE_DSN)%'
-#            phrase:
-#                dsn: '%env(PHRASE_DSN)%'
+            # Tu peux activer l’un de ces services si tu veux synchroniser tes traductions
+            # crowdin:
+            #     dsn: '%env(CROWDIN_DSN)%'
+            # loco:
+            #     dsn: '%env(LOCO_DSN)%'
+            # lokalise:
+            #     dsn: '%env(LOKALISE_DSN)%'
+            # phrase:
+            #     dsn: '%env(PHRASE_DSN)%'
