@@ -6,12 +6,8 @@ body {
   padding: 0;
 }
 
-
-@media (min-width: 576px) {
-    .col-sm-9 {
-        flex: 0 0 auto;
-        /* width: 75%; */
-    }
+body:not(#homepage) {
+    padding-top: 0px;
 }
 
 html {
