@@ -38,6 +38,27 @@ class Book
     private bool $available = true;
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $coverImage = null;
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $coverUrl = null;
+    private ?string $coverFilename = null;
+
+    public function getCoverFilename(): ?string
+    {
+        return $this->coverFilename;
+    }
+
+
+    public function getCoverUrl(): ?string
+    {
+        return $this->coverUrl;
+    }
+
+    public function setCoverUrl(?string $coverUrl): self
+    {
+        $this->coverUrl = $coverUrl;
+        return $this;
+    }
+
 
     public function getCoverImage(): ?string
     {
