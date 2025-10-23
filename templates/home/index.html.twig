@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TomTroc - Accueil{% endblock %}
+
+{% block main %}
+<!-- Hero Section -->
+<section class="hero text-center py-5 bg-light">
+    <div class="container">
+        <h1 class="display-4">📚 Rejoignez nos lecteurs passionnés</h1>
+        <p class="lead">Partagez vos livres et découvrez ceux des autres</p>
+        <a href="{{ path('book_index') }}" class="btn btn-success btn-lg mt-3">Commencer</a>
+    </div>
+</section>
+
+<!-- Latest Books -->
+<section class="latest-books py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Les derniers livres ajoutés</h2>
+        <div class="row justify-content-center">
+            {% for book in books %}
+                <div class="col-md-3 mb-4">
+                    <div class="card shadow-sm h-100">
+                        {% if book.coverUrl %}
+                            <img src="{{ book.coverUrl }}" class="card-img-top" alt="{{ book.title }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ book.title }}</h5>
+                            <p class="card-text text-muted">{{ book.author }}</p>
+                            <a href="{{ path('book_show', {id: book.id}) }}" class="btn btn-outline-primary btn-sm">Voir</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p class="text-center">Aucun livre pour le moment.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="how-it-works py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-4">Comment ça marche ?</h2>
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="fs-1">📖</div>
+                <p class="mt-2">1. Ajoutez vos livres</p>
+            </div>
+            <div class="col-md-4">
+                <div class="fs-1">🔍</div>
+                <p class="mt-2">2. Choisissez un livre</p>
+            </div>
+            <div class="col-md-4">
+                <div class="fs-1">📦</div>
+                <p class="mt-2">3. Recevez-le chez vous</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Values -->
+<section class="our-values py-5">
+    <div class="container text-center">
+        <h2 class="mb-4">Nos valeurs</h2>
+        <p class="lead">Chez TomTroc, nous croyons au partage, à la curiosité, et à la magie des livres. Chaque échange est une rencontre, chaque lecture une aventure.</p>
+        <div class="fs-1 text-danger mt-3">❤️</div>
+    </div>
+</section>
+{% endblock %}
