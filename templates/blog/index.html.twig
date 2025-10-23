@@ -1,59 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block body_id 'blog_index' %}
+{% block title %}TomTroc - Accueil{% endblock %}
 
 {% block main %}
-    {% for post in paginator.results %}
-        {{ include('blog/_post.html.twig') }}
-    {% else %}
-        <div class="bg-body-tertiary mb-3 p-3 rounded">{{ 'post.no_posts_found'|trans }}</div>
-    {% endfor %}
+<section class="hero text-center py-5 bg-light">
+    <h1 class="display-4">📚 Rejoignez nos lecteurs passionnés</h1>
+    <p class="lead">Échangez vos livres, vos idées, vos mondes.</p>
+    <a href="{{ path('book_index') }}" class="btn btn-primary btn-lg mt-3">Commencer</a>
+</section>
 
-    {% if paginator.hasToPaginate %}
+<section class="latest-books py-5">
+    <h2 class="text-center mb-4">Les derniers livres ajoutés</h2>
+    <div class="row justify-content-center">
+        {% for book in books %}
+            <div class="col-md-3 mb-4">
+                <div class="card shadow-sm">
+                    <img src="{{ book.coverUrl }}" class="card-img-top" alt="{{ book.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ book.title }}</h5>
+                        <p class="card-text">{{ book.author }}</p>
+                        <a href="{{ path('book_show', {id: book.id}) }}" class="btn btn-outline-primary btn-sm">Voir</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p class="text-center">Aucun livre pour le moment.</p>
+        {% endfor %}
+    </div>
+</section>
 
-        <div class="navigation text-center">
-            <ul class="pagination pagination-lg">
-                {% if paginator.hasPreviousPage %}
-                    <li class="page-item">
-                        <a class="page-link" href="{{ path('blog_index_paginated', {page: paginator.previousPage, tag: tagName}) }}" rel="previous">
-                            <twig:ux:icon name="tabler:arrow-left"/> {{ 'paginator.previous'|trans }}
-                        </a>
-                    </li>
-                {% else %}
-                    <li class="page-item disabled">
-                        <span class="page-link"><twig:ux:icon name="tabler:arrow-left"/> {{ 'paginator.previous'|trans }}</span>
-                    </li>
-                {% endif %}
-
-                {% for i in 1..paginator.lastPage %}
-                    {% if i == paginator.currentPage %}
-                        <li class="page-item active">
-                            <span class="page-link">{{ i }} <span class="sr-only">{{ 'paginator.current'|trans }}</span></span>
-                        </li>
-                    {% else %}
-                        <li class="page-item"><a class="page-link" href="{{ path('blog_index_paginated', {page: i, tag: tagName}) }}">{{ i }}</a></li>
-                    {% endif %}
-                {% endfor %}
-
-                {% if paginator.hasNextPage %}
-                    <li class="page-item">
-                        <a class="page-link" href="{{ path('blog_index_paginated', {page: paginator.nextPage, tag: tagName}) }}">
-                            <span>{{ 'paginator.next'|trans }} <twig:ux:icon name="tabler:arrow-right"/></span>
-                        </a>
-                    </li>
-                {% else %}
-                    <li class="page-item disabled">
-                        <span class="page-link">{{ 'paginator.next'|trans }} <twig:ux:icon name="tabler:arrow-right"/></span>
-                    </li>
-                {% endif %}
-            </ul>
+<section class="how-it-works py-5 bg-light">
+    <h2 class="text-center mb-4">Comment ça marche ?</h2>
+    <div class="row text-center">
+        <div class="col-md-4">
+            <span class="fs-1">📖</span>
+            <p>Ajoute ton livre</p>
         </div>
-    {% endif %}
+        <div class="col-md-4">
+            <span class="fs-1">🔍</span>
+            <p>Explore les livres disponibles</p>
+        </div>
+        <div class="col-md-4">
+            <span class="fs-1">💬</span>
+            <p>Contacte et échange</p>
+        </div>
+    </div>
+</section>
 {% endblock %}
-
-{# {% block sidebar %}
-    {{ parent() }}
-
-    {{ show_source_code(_self) }}
-    {{ include('blog/_rss.html.twig') }}
-{% endblock %} #}
