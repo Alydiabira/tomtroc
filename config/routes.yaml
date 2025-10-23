@@ -6,7 +6,7 @@ homepage:
 # Chargement automatique des contrôleurs avec attributs
 controllers:
     resource: '../src/Controller/'
-    namespace: App\Controller
+    # namespace: App\Controller
     type: attribute
     # Si tu veux des URLs multilingues comme /fr/blog, décommente la ligne ci-dessous
     # prefix: /{_locale}
