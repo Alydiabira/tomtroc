@@ -46,6 +46,7 @@ class BookController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', '📘 Livre ajouté avec succès !');
+
             return $this->redirectToRoute('book_index');
         }
 
@@ -66,7 +67,9 @@ class BookController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
+
             $this->addFlash('success', '📘 Livre mis à jour !');
+
             return $this->redirectToRoute('book_index');
         }
 
@@ -86,9 +89,22 @@ class BookController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $book->getId(), $request->request->get('_token'))) {
             $em->remove($book);
             $em->flush();
+
             $this->addFlash('danger', '📕 Livre supprimé.');
         }
 
         return $this->redirectToRoute('book_index');
+    }
+
+    #[Route('/{id}/confirmer-suppression', name: 'book_confirm_delete')]
+    public function confirmDelete(Book $book): Response
+    {
+        if ($book->getOwner() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
+        return $this->render('book/delete.html.twig', [
+            'book' => $book,
+        ]);
     }
 }
