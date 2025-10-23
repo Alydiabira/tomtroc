@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le livre{% endblock %}
+
+{% block main %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Modifier le livre 📘</h1>
+
+        {% if book %}
+            <div class="mb-3">
+                <strong>Titre actuel :</strong> {{ book.title }}<br>
+                <strong>Auteur :</strong> {{ book.author }}<br>
+                <strong>Genre :</strong> {{ book.genre }}<br>
+                <strong>Disponible :</strong> {{ book.available ? 'Oui' : 'Non' }}
+            </div>
+        {% endif %}
+
+        {{ form_start(form) }}
+            <div class="mb-3">
+                {{ form_row(form.title) }}
+                {{ form_row(form.author) }}
+                {{ form_row(form.genre) }}
+                {{ form_row(form.description) }}
+                {{ form_row(form.available) }}
+            </div>
+            <button class="btn btn-success">💾 Enregistrer</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
