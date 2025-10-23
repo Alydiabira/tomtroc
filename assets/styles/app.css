@@ -6,6 +6,27 @@ body {
   padding: 0;
 }
 
+html {
+  margin: 0;
+  padding: 0;
+}
+
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.container,
+.container-fluid {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+* {
+  box-sizing: border-box;
+}
+
+
+
 /* Navbar */
 .navbar {
   background-color: #4CAF50;
