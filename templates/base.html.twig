@@ -16,7 +16,7 @@
     
 </head>
 
-<body id="{% block body_id %}{% endblock %}" class="tomtroc-theme {{ is_rtl(app.request.locale) ? 'rtl' }}">
+<body id="{% block body_id %}{% endblock %}" class="tomtroc-theme bg-light text-dark {{ is_rtl(app.request.locale) ? 'rtl' }}">
 
     {% block header %}
         {% set _route = app.request.attributes.get('_route') %}
