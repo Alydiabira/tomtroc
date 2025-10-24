@@ -11,11 +11,15 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\String\Slugger\AsciiSlugger;
+
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'symfony_demo_user')]
+
 #[UniqueEntity(fields: ['email'], message: 'Il existe déjà un compte avec cet email')]
+#[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     final public const ROLE_USER = 'ROLE_USER';
@@ -76,6 +80,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::STRING, length: 100, nullable: true)]
     private ?string $availability = null;
+
+    #[ORM\Column(type: Types::STRING, length: 100, unique: true)]
+    private ?string $slug = null;
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function generateSlug(): void
+    {
+        $slugger = new AsciiSlugger();
+        $this->slug = strtolower($slugger->slug($this->pseudo ?? $this->username ?? $this->fullName ?? 'utilisateur'));
+    }
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function updateSlug(): void
+    {
+        $this->generateSlug();
+    }
+
+
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
+        return $this;
+    }
 
     public function getAvailability(): ?string
     {
