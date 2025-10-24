@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\String\Slugger\SluggerInterface;
+
 
 #[Route('/livres')]
 class BookController extends AbstractController
@@ -56,28 +59,47 @@ class BookController extends AbstractController
     }
 
     #[Route('/{id}/modifier', name: 'book_edit')]
-    public function edit(Book $book, Request $request, EntityManagerInterface $em): Response
-    {
-        if ($book->getOwner() !== $this->getUser()) {
-            throw $this->createAccessDeniedException('Tu ne peux modifier que tes propres livres.');
-        }
-
-        $form = $this->createForm(BookType::class, $book);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush();
-
-            $this->addFlash('success', '📘 Livre mis à jour !');
-
-            return $this->redirectToRoute('book_index');
-        }
-
-        return $this->render('book/edit.html.twig', [
-            'form' => $form->createView(),
-            'book' => $book,
-        ]);
+public function edit(Book $book, Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
+{
+    if ($book->getOwner() !== $this->getUser()) {
+        throw $this->createAccessDeniedException('Tu ne peux modifier que tes propres livres.');
     }
+
+    $form = $this->createForm(BookType::class, $book);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $coverFile = $form->get('coverImage')->getData();
+
+        if ($coverFile) {
+            $originalFilename = pathinfo($coverFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename . '-' . uniqid() . '.' . $coverFile->guessExtension();
+
+            try {
+                $coverFile->move(
+                    $this->getParameter('covers_directory'),
+                    $newFilename
+                );
+            } catch (FileException $e) {
+                $this->addFlash('danger', 'Erreur lors de l’upload de l’image.');
+            }
+
+            $book->setCoverImage($newFilename);
+        }
+
+        $em->flush();
+        $this->addFlash('success', '📘 Livre mis à jour !');
+
+        return $this->redirectToRoute('book_index');
+    }
+
+    return $this->render('book/edit.html.twig', [
+        'form' => $form->createView(),
+        'book' => $book,
+    ]);
+}
+
 
     #[Route('/{id}/supprimer', name: 'book_delete', methods: ['POST'])]
     public function delete(Book $book, Request $request, EntityManagerInterface $em): Response
@@ -107,4 +129,6 @@ class BookController extends AbstractController
             'book' => $book,
         ]);
     }
+
+    
 }
