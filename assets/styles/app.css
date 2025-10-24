@@ -1,9 +1,10 @@
 /* Base styles */
 body {
-  background-color: #fdfdf6;
-  font-family: 'Poppins', sans-serif;
+  background-color: #F5F3EF; /* couleur de fond principale */
+  font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
+  color: #212529;
 }
 
 body:not(#homepage) {
@@ -29,23 +30,61 @@ html {
   box-sizing: border-box;
 }
 
+.tomtroc-theme {
+    background-color: #F5F3EF;
+    color: #212529;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+}
+
+.tomtroc-theme h1, .tomtroc-theme h2 {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+}
+
+
+.btn-success {
+    background-color: #4CAF50;
+    border-radius: 50px;
+    border: none;
+}
+
 
 
 /* Navbar */
 .navbar {
-  background-color: #4CAF50;
-  color: white;
+  background-color: #ffffff;
+  border-bottom: 1px solid #eaeaea;
 }
+
+.navbar .nav-link {
+  color: #2c3e50;
+  font-weight: 500;
+  padding: 10px 16px;
+}
+
+.navbar .nav-link.active {
+  color: #4CAF50;
+  border-bottom: 2px solid #4CAF50;
+}
+
 
 /* Buttons */
 .btn-success,
 .send-button {
   background-color: #4CAF50;
   border: none;
-  border-radius: 8px;
-  padding: 10px 16px;
+  border-radius: 50px;
+  padding: 10px 20px;
   color: white;
-  cursor: pointer;
+  font-weight: 500;
   transition: background-color 0.3s ease;
 }
 
@@ -54,22 +93,25 @@ html {
   background-color: #45A049;
 }
 
+
 /* Form styling */
-.form-edit-user input,
-.form-edit-user textarea,
-.message-form textarea {
-  background-color: #fdfdf6;
+input,
+textarea,
+select {
+  background-color: #fff;
   border: 1px solid #ced4da;
-  padding: 10px 20px;
+  padding: 12px 16px;
   font-size: 16px;
-  border-radius: 8px;
-  resize: none;
+  border-radius: 12px;
+  width: 100%;
 }
 
-input.form-control::placeholder {
+input::placeholder,
+textarea::placeholder {
   color: #aaa;
   font-style: italic;
 }
+
 
 /* Chat container */
 .conversation-container {
@@ -192,4 +234,24 @@ input.form-control::placeholder {
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+footer {
+  background-color: #ffffff;
+  border-top: 1px solid #eaeaea;
+  padding: 20px 0;
+  font-size: 0.9em;
+  color: #666;
+}
+
+
+@media (max-width: 768px) {
+  .card, .form-wrapper, .conversation-container {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .navbar .nav-link {
+    padding: 8px 12px;
+  }
 }
