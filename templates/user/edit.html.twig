@@ -2,131 +2,144 @@
 {% block body_id 'user_account' %}
 
 {% block main %}
-<div class="container mt-5">
-    <div class="row gy-4">
-        <!-- 🧑‍💼 Profil utilisateur -->
-        <div class="col-md-4">
-            <div class="card p-4 shadow-sm rounded-4 text-center">
-                <img src="{{ asset('uploads/' ~ user.avatar|default('default.jpg')) }}" class="rounded-circle mb-3 shadow" width="120" height="120" alt="Avatar">
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="w-100" style="max-width: 960px;">
+        <div class="row gy-4 justify-content-center">
+            <!-- 🧑‍💼 Profil utilisateur -->
+            <div class="col-md-4">
+                <div class="card p-4 shadow-sm rounded-4 text-center">
+                    <img src="{{ asset('uploads/' ~ user.avatar|default('default.jpg')) }}" class="rounded-circle mb-3 shadow" width="120" height="120" alt="Avatar">
 
-                <form method="POST" action="{{ path('user_avatar') }}" enctype="multipart/form-data" class="mb-3">
-                    <input type="file" name="avatar" class="form-control form-control-sm mb-2">
-                    <button class="btn btn-sm btn-outline-secondary rounded-pill">Modifier</button>
-                </form>
+                    <form method="POST" action="{{ path('user_avatar') }}" enctype="multipart/form-data" class="mb-3">
+                        <input type="file" name="avatar" class="form-control form-control-sm mb-2">
+                        <button class="btn btn-sm btn-outline-secondary rounded-pill">Modifier</button>
+                    </form>
 
-                <h4 class="fw-semibold">{{ user.pseudo }}</h4>
-                <p class="text-muted small">Membre depuis {{ user.createdAt|date('Y') }}</p>
+                    <h4 class="fw-semibold">{{ user.pseudo }}</h4>
+                    <p class="text-muted small">Membre depuis {{ user.createdAt|date('Y') }}</p>
 
-                {% if user.availability %}
-                    <div class="mb-2">
-                        <i class="bi bi-calendar-event-fill text-primary me-2"></i>
-                        <span class="badge 
-                            {% if user.availability == 'Tous les jours' %}
-                                bg-success
-                            {% elseif user.availability == 'Week-end uniquement' %}
-                                bg-warning text-dark
-                            {% elseif user.availability == 'Soirs en semaine' %}
-                                bg-info text-dark
-                            {% else %}
-                                bg-secondary
-                            {% endif %}
-                        " data-bs-toggle="tooltip" title="Disponible pour échanger 📚">
-                            {{ user.availability }}
-                        </span>
-                    </div>
-                {% endif %}
-
-                <hr>
-                <p class="fw-bold mb-1">📚 Bibliothèque</p>
-                <p class="text-muted">{{ user.books|length }} livre{{ user.books|length > 1 ? 's' : '' }}</p>
-                <a href="{{ path('user_books') }}" class="btn btn-outline-primary rounded-pill w-100 mb-2">Voir mes livres</a>
-
-                {% if app.user and app.user.id != user.id %}
-                    <a href="{{ path('start_conversation', {id: user.id}) }}" class="btn btn-primary rounded-pill w-100">
-                        <twig:ux:icon name="tabler:message"/> Envoyer un message
-                    </a>
-                {% endif %}
-            </div>
-        </div>
-
-        <!-- 📝 Formulaire d'édition -->
-        <div class="col-md-8">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-body px-4 py-4">
-                    <h2 class="h5 mb-4">Vos informations personnelles</h2>
-
-                    {{ form_start(form) }}
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                {{ form_row(form.email, {'attr': {'class': 'form-control rounded-pill'}}) }}
-                            </div>
-                            <div class="col-md-6">
-                                {{ form_row(form.pseudo, {'attr': {'class': 'form-control rounded-pill'}}) }}
-                            </div>
-                            <div class="col-md-6">
-                                {{ form_row(form.phoneNumber, {'attr': {'class': 'form-control rounded-pill'}}) }}
-                            </div>
-                            <div class="col-12">
-                                {{ form_row(form.message, {
-                                    'attr': {
-                                        'class': 'form-control rounded-4',
-                                        'rows': '4',
-                                        'placeholder': 'Un petit mot pour les autres troqueurs…'
-                                    }
-                                }) }}
-                            </div>
+                    {% if user.availability %}
+                        <div class="mb-2">
+                            <i class="bi bi-calendar-event-fill text-primary me-2"></i>
+                            <span class="badge 
+                                {% if user.availability == 'Tous les jours' %}
+                                    bg-success
+                                {% elseif user.availability == 'Week-end uniquement' %}
+                                    bg-warning text-dark
+                                {% elseif user.availability == 'Soirs en semaine' %}
+                                    bg-info text-dark
+                                {% else %}
+                                    bg-secondary
+                                {% endif %}
+                            " data-bs-toggle="tooltip" title="Disponible pour échanger 📚">
+                                {{ user.availability }}
+                            </span>
                         </div>
+                    {% endif %}
 
-                        <button class="btn btn-success w-100 rounded-pill mt-4">💾 Enregistrer</button>
-                    {{ form_end(form) }}
+                    <hr>
+                    <p class="fw-bold mb-1">📚 Bibliothèque</p>
+                    <p class="text-muted">{{ user.books|length }} livre{{ user.books|length > 1 ? 's' : '' }}</p>
+                    <a href="{{ path('user_books') }}" class="btn btn-outline-primary rounded-pill w-100 mb-2">Voir mes livres</a>
 
-                    <a href="{{ path('user_change_password') }}" class="btn btn-outline-danger w-100 rounded-pill mt-3">🔐 Changer mon mot de passe</a>
+                    {% if app.user and app.user.id != user.id %}
+                        <a href="{{ path('start_conversation', {id: user.id}) }}" class="btn btn-primary rounded-pill w-100">
+                            <twig:ux:icon name="tabler:message"/> Envoyer un message
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- 📝 Formulaire d'édition -->
+            <div class="col-md-8">
+                <div class="card shadow-lg border-0 rounded-4">
+                    <div class="card-body px-4 py-4">
+                        <h2 class="h5 mb-4 text-center">Vos informations personnelles</h2>
+
+                        {{ form_start(form) }}
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    {{ form_row(form.email, {'attr': {'class': 'form-control rounded-pill'}}) }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form_row(form.pseudo, {'attr': {'class': 'form-control rounded-pill'}}) }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form_row(form.phoneNumber, {'attr': {'class': 'form-control rounded-pill'}}) }}
+                                </div>
+                                <div class="col-12">
+                                    {{ form_row(form.message, {
+                                        'attr': {
+                                            'class': 'form-control rounded-4',
+                                            'rows': '4',
+                                            'placeholder': 'Un petit mot pour les autres troqueurs…'
+                                        }
+                                    }) }}
+                                </div>
+                            </div>
+
+                            <button class="btn btn-success w-100 rounded-pill mt-4">💾 Enregistrer</button>
+                        {{ form_end(form) }}
+
+                        <a href="{{ path('user_change_password') }}" class="btn btn-outline-danger w-100 rounded-pill mt-3">🔐 Changer mon mot de passe</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<div class="row mt-5">
-    <div class="col-12">
-        <h2 class="h5 mb-4">📚 Mes livres disponibles</h2>
 
-        {% if user.books|length > 0 %}
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-                {% for book in user.books %}
-                    <div class="col">
-                        <div class="card h-100 shadow-sm rounded-4">
-                            {% if book.coverImage %}
-                                <img src="{{ asset('uploads/covers/' ~ book.coverImage) }}" class="card-img-top rounded-top-4" alt="{{ book.title }}">
-                            {% else %}
-                                <img src="{{ asset('images/default-book.jpg') }}" class="card-img-top rounded-top-4" alt="Livre">
-                            {% endif %}
-                            <div class="card-body">
-                                <h5 class="card-title">{{ book.title }}</h5>
-                                <p class="card-text text-muted">{{ book.author }}</p>
-                                <span class="badge 
-                                    {% if book.available %}
-                                        bg-success
-                                    {% else %}
-                                        bg-secondary
-                                    {% endif %}
-                                ">
-                                    {{ book.available ? 'Disponible' : 'Indisponible' }}
-                                </span>
-                            </div>
-                            <div class="card-footer bg-transparent border-0 text-end">
-                                <a href="{{ path('book_show', {id: book.id}) }}" class="btn btn-sm btn-outline-primary rounded-pill">Voir</a>
-                                {% if app.user and app.user.id == user.id %}
-                                <a href="{{ path('book_edit', {id: book.id}) }}" class="btn btn-sm btn-outline-secondary rounded-pill">Modifier</a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
+        <!-- 📚 Mes livres disponibles -->
+        <div class="row mt-5 justify-content-center">
+            <div class="col-12">
+                <h2 class="h5 mb-4 text-center">📚 Mes livres disponibles</h2>
+
+                {% if user.books|length > 0 %}
+                    {# <div class="d-flex justify-content-end mb-3">
+                        <a href="{{ path('book_search') }}" class="btn btn-outline-primary rounded-pill">
+                            🔍 Rechercher un livre
+                        </a>
+                    </div> #}
+
+                    <table class="table table-hover align-middle rounded-4 overflow-hidden">
+                        <thead class="table-light">
+                            <tr>
+                                <th>📘 Livre</th>
+                                <th>Auteur</th>
+                                <th>Statut</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for book in user.books %}
+                                <tr>
+                                    <td class="d-flex align-items-center gap-3">
+                                        {% if book.coverImage %}
+                                            <img src="{{ asset('uploads/covers/' ~ book.coverImage) }}" alt="{{ book.title }}" width="48" height="64" class="rounded shadow-sm">
+                                        {% else %}
+                                            <img src="{{ asset('images/default-book.jpg') }}" alt="Livre" width="48" height="64" class="rounded shadow-sm">
+                                        {% endif %}
+                                        <span>{{ book.title }}</span>
+                                    </td>
+                                    <td>{{ book.author }}</td>
+                                    <td>
+                                        <span class="badge {% if book.available %}bg-success{% else %}bg-secondary{% endif %}">
+                                            {{ book.available ? 'Disponible' : 'Indisponible' }}
+                                        </span>
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="{{ path('book_show', {id: book.id}) }}" class="btn btn-sm btn-outline-primary rounded-pill">Voir</a>
+                                        {% if app.user and app.user.id == user.id %}
+                                            <a href="{{ path('book_edit', {id: book.id}) }}" class="btn btn-sm btn-outline-secondary rounded-pill">Modifier</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="text-muted text-center">Aucun livre ajouté pour le moment.</p>
+                {% endif %}
             </div>
-        {% else %}
-            <p class="text-muted">Aucun livre ajouté pour le moment.</p>
-        {% endif %}
+        </div>
     </div>
 </div>
-
 {% endblock %}
