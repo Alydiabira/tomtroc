@@ -49,4 +49,16 @@ class BookRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function findAvailableByTitle(string $term): array
+{
+    return $this->createQueryBuilder('b')
+        ->andWhere('b.available = true')
+        ->andWhere('LOWER(b.title) LIKE :term')
+        ->setParameter('term', '%' . strtolower($term) . '%')
+        ->orderBy('b.createdAt', 'DESC')
+        ->getQuery()
+        ->getResult();
+}
+
 }
