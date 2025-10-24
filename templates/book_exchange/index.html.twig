@@ -14,6 +14,7 @@
     {% if books is not empty %}
         <div class="row row-cols-1 row-cols-md-3 g-4">
             {% for book in books %}
+            {% if book.available %}
                 <div class="col">
                     <div class="card h-100 shadow-sm rounded-4">
                         {% if book.coverImage %}
@@ -28,7 +29,9 @@
                         </div>
                     </div>
                 </div>
-            {% endfor %}
+            {% endif %}
+    {% endfor %}
+
         </div>
     {% else %}
         <p class="text-muted text-center">Aucun livre disponible pour le moment.</p>
