@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+{% block title %}Profil de {{ user.pseudo }}{% endblock %}
+
+{% block main %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card p-4 shadow-sm rounded-4 text-center">
+                <img src="{{ asset('uploads/' ~ user.avatar|default('default.jpg')) }}" class="rounded-circle mb-3 shadow" width="120" height="120" alt="Avatar">
+                <h4 class="fw-semibold">{{ user.pseudo }}</h4>
+                <p class="text-muted small">Membre depuis {{ user.createdAt|date('Y') }}</p>
+
+                {% if user.availability %}
+                    <span class="badge 
+                        {% if user.availability == 'Tous les jours' %}
+                            bg-success
+                        {% elseif user.availability == 'Week-end uniquement' %}
+                            bg-warning text-dark
+                        {% elseif user.availability == 'Soirs en semaine' %}
+                            bg-info text-dark
+                        {% else %}
+                            bg-secondary
+                        {% endif %}
+                    ">
+                        {{ user.availability }}
+                    </span>
+                {% endif %}
+
+                {% if app.user and app.user.id != user.id %}
+                    <a href="{{ path('start_conversation', {id: user.id}) }}" class="btn btn-primary rounded-pill mt-3">
+                        💬 Écrire un message
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <h2 class="h5 mb-4">📚 Livres disponibles</h2>
+            {% if user.books|length > 0 %}
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    {% for book in user.books if book.available %}
+                        <div class="col">
+                            <div class="card h-100 shadow-sm rounded-4">
+                                {% if book.coverImage %}
+                                    <img src="{{ asset('uploads/covers/' ~ book.coverImage) }}" class="card-img-top rounded-top-4" alt="{{ book.title }}">
+                                {% else %}
+                                    <img src="{{ asset('images/default-book.jpg') }}" class="card-img-top rounded-top-4" alt="Livre">
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ book.title }}</h5>
+                                    <p class="card-text text-muted">{{ book.author }}</p>
+                                    <a href="{{ path('book_show', {id: book.id}) }}" class="btn btn-sm btn-outline-primary rounded-pill">Voir</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted">Aucun livre disponible pour le moment.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
