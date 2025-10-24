@@ -10,11 +10,19 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/profil')]
 class PublicProfileController extends AbstractController
 {
-    #[Route('/{id}', name: 'public_profile')]
-    public function show(User $user): Response
-    {
-        return $this->render('user/public_profile.html.twig', [
-            'user' => $user,
-        ]);
+  #[Route('/profil/{slug}', name: 'public_profile')]
+public function show(UserRepository $userRepository, string $slug): Response
+{
+    $user = $userRepository->findOneBy(['slug' => $slug]);
+
+    if (!$user) {
+        throw $this->createNotFoundException('Utilisateur introuvable');
     }
+
+    return $this->render('user/public_profile.html.twig', [
+        'user' => $user,
+    ]);
+}
+
+
 }
