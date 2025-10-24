@@ -3,27 +3,58 @@
 {% block title %}Modifier le livre{% endblock %}
 
 {% block main %}
-    <div class="container mt-4">
-        <h1 class="mb-4">Modifier le livre 📘</h1>
+<div class="container mt-5">
+    <h1 class="mb-4">📘 Modifier le livre</h1>
 
-        {% if book %}
-            <div class="mb-3">
-                <strong>Titre actuel :</strong> {{ book.title }}<br>
-                <strong>Auteur :</strong> {{ book.author }}<br>
-                <strong>Genre :</strong> {{ book.genre }}<br>
-                <strong>Disponible :</strong> {{ book.available ? 'Oui' : 'Non' }}
+    {% if book %}
+        <div class="card mb-4 p-3 shadow-sm rounded-4">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-3">
+                    {% if book.coverImage %}
+                        <img src="{{ asset('uploads/covers/' ~ book.coverImage) }}" class="img-fluid rounded shadow-sm" alt="Couverture du livre">
+                    {% else %}
+                        <img src="{{ asset('images/default-book.jpg') }}" class="img-fluid rounded shadow-sm" alt="Pas de couverture">
+                    {% endif %}
+                </div>
+                <div class="col-md-9">
+                    <p><strong>Titre :</strong> {{ book.title }}</p>
+                    <p><strong>Auteur :</strong> {{ book.author }}</p>
+                    <p><strong>Genre :</strong> {{ book.genre }}</p>
+                    <p><strong>Disponible :</strong> {{ book.available ? 'Oui' : 'Non' }}</p>
+                </div>
             </div>
-        {% endif %}
+        </div>
+    {% endif %}
 
-        {{ form_start(form) }}
-            <div class="mb-3">
-                {{ form_row(form.title) }}
-                {{ form_row(form.author) }}
-                {{ form_row(form.genre) }}
-                {{ form_row(form.description) }}
-                {{ form_row(form.available) }}
-            </div>
-            <button class="btn btn-success">💾 Enregistrer</button>
-        {{ form_end(form) }}
+    <div class="card shadow-lg rounded-4">
+        <div class="card-body px-4 py-4">
+            {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        {{ form_row(form.title, {'attr': {'class': 'form-control rounded-pill'}}) }}
+                        {{ form_row(form.author, {'attr': {'class': 'form-control rounded-pill'}}) }}
+                        {{ form_row(form.genre, {'attr': {'class': 'form-control rounded-pill'}}) }}
+                        {{ form_row(form.available, {'attr': {'class': 'form-check-input'}}) }}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form_row(form.coverImage, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <div class="col-12">
+                        {{ form_row(form.description, {
+                            'attr': {
+                                'class': 'form-control rounded-4',
+                                'rows': '4',
+                                'placeholder': 'Résumé ou détails du livre…'
+                            }
+                        }) }}
+                    </div>
+                </div>
+
+                <button class="btn btn-success w-100 rounded-pill mt-4">💾 Enregistrer</button>
+            {{ form_end(form) }}
+        </div>
     </div>
+</div>
 {% endblock %}
