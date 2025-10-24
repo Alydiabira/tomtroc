@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos livres à l’échange{% endblock %}
+
+{% block main %}
+<div class="container mt-5">
+    <h1 class="h4 mb-4 text-center">📚 Nos livres à l’échange</h1>
+
+    <form method="get" class="mb-4 d-flex justify-content-center">
+        <input type="text" name="q" value="{{ searchTerm }}" class="form-control w-50 rounded-pill me-2" placeholder="Rechercher un titre...">
+        <button class="btn btn-primary rounded-pill">🔍 Rechercher</button>
+    </form>
+
+    {% if books is not empty %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for book in books %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm rounded-4">
+                        {% if book.coverImage %}
+                            <img src="{{ asset('uploads/covers/' ~ book.coverImage) }}" class="card-img-top rounded-top-4" alt="{{ book.title }}">
+                        {% else %}
+                            <img src="{{ asset('images/default-book.jpg') }}" class="card-img-top rounded-top-4" alt="Livre">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ book.title }}</h5>
+                            <p class="card-text text-muted">{{ book.author }}</p>
+                            <a href="{{ path('book_show', {id: book.id}) }}" class="btn btn-sm btn-outline-primary rounded-pill">Voir</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted text-center">Aucun livre disponible pour le moment.</p>
+    {% endif %}
+</div>
+{% endblock %}
