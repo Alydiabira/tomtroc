@@ -38,7 +38,8 @@
             <h2 class="h5 mb-4">📚 Livres disponibles</h2>
             {% if user.books|length > 0 %}
                 <div class="row row-cols-1 row-cols-md-2 g-4">
-                    {% for book in user.books if book.available %}
+                    {% for book in user.books %}
+                    {% if book.available %}
                         <div class="col">
                             <div class="card h-100 shadow-sm rounded-4">
                                 {% if book.coverImage %}
@@ -53,7 +54,8 @@
                                 </div>
                             </div>
                         </div>
-                    {% endfor %}
+                    {% endif %}
+                {% endfor %}
                 </div>
             {% else %}
                 <p class="text-muted">Aucun livre disponible pour le moment.</p>
