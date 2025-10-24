@@ -116,7 +116,7 @@
                             <div class="card-footer bg-transparent border-0 text-end">
                                 <a href="{{ path('book_show', {id: book.id}) }}" class="btn btn-sm btn-outline-primary rounded-pill">Voir</a>
                                 {% if app.user and app.user.id == user.id %}
-                                    <a href="{{ path('admin_book_edit', {id: book.id}) }}" class="btn btn-sm btn-outline-secondary rounded-pill">Modifier</a>
+                                <a href="{{ path('book_edit', {id: book.id}) }}" class="btn btn-sm btn-outline-secondary rounded-pill">Modifier</a>
                                 {% endif %}
                             </div>
                         </div>
