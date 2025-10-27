@@ -2,33 +2,11 @@
 
 {% block body_id 'book_index' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-        body#book_index {
-            background: linear-gradient(to bottom, #fdfcfb, #e2d1c3);
-        }
-        .card:hover {
-            transform: scale(1.02);
-            transition: transform 0.2s ease-in-out;
-        }
-        .owner-info {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-        }
-        .owner-info img {
-            width: 32px;
-            height: 32px;
-            object-fit: cover;
-        }
-    </style>
-{% endblock %}
+
 
 {% block main %}
 <div class="container mt-5">
-    <h2 class="mb-4 text-center">📚 Nos livres à l’échange</h2>
+    <h2 class="mb-4 text-center">📚 Nos livres à l’échange dfbdfbdf</h2>
 
     {% if books|length > 0 %}
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
