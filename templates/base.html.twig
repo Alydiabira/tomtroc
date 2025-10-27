@@ -4,28 +4,35 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="view-transition" content="same-origin">
+    <meta name="description" content="TomTroc - Échangez vos livres avec d'autres lecteurs passionnés et découvrez de nouveaux horizons littéraires.">
+    <meta name="author" content="TomTroc Team">
+    <meta name="keywords" content="livres, échange, lecture, communauté, TomTroc">
+
     <title>{% block title %}TomTroc{% endblock %}</title>
 
     <link rel="alternate" type="application/rss+xml" title="{{ 'rss.title'|trans }}" href="{{ path('blog_rss') }}">
-    <link rel="shortcut icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
+
     
+
 </head>
 
-<body id="{% block body_id %}{% endblock %}" class="tomtroc-theme bg-light text-dark {{ is_rtl(app.request.locale) ? 'rtl' }}">
+<body id="{% block body_id %}{% endblock %}" class="tomtroc-theme {{ is_rtl(app.request.locale) ? 'rtl' }}">
 
     {% block header %}
         {% set _route = app.request.attributes.get('_route') %}
         <header>
-            <nav class="navbar navbar-expand-lg " style="background-color: #F5F3EF;">
+            <nav class="navbar navbar-expand-lg bg-white border-bottom">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="{{ path('homepage', {'_locale': app.request.locale}) }}">
-                        <img src="{{ asset('images/logo.svg') }}" alt="TomTroc Logo" width="30" height="30" class="d-inline-block align-text-top">
-                        TomTroc
+                    <a class="navbar-brand d-flex align-items-center gap-2" href="{{ path('homepage', {'_locale': app.request.locale}) }}">
+                        <img src="{{ asset('images/logo.svg') }}" alt="TomTroc Logo" width="30" height="30">
+                        <span class="fw-bold">TomTroc</span>
                     </a>
 
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -36,7 +43,7 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link {{ _route == 'blog_index' ? 'active' }}" href="{{ path('homepage') }}">
+                                <a class="nav-link {{ _route == 'homepage' ? 'active' }}" href="{{ path('homepage') }}">
                                     <i class="bi bi-house-door"></i> Accueil
                                 </a>
                             </li>
@@ -45,7 +52,6 @@
                                     <i class="bi bi-book"></i> Nos livres à l’échange
                                 </a>
                             </li>
-
                             <li class="nav-item">
                                 <a class="nav-link {{ _route == 'messagerie' ? 'active' }}" href="{{ path('messagerie') }}">
                                     <i class="bi bi-chat-dots"></i> Messagerie
@@ -95,20 +101,20 @@
         </header>
     {% endblock %}
 
-    <main class="container-fluid px-0 py-0 " >
+    <main class="container-fluid px-0 py-0">
         <div class="row">
-            <div id="main" class="">
+            <div id="main" class="col-sm-9">
                 {{ include('default/_flash_messages.html.twig') }}
                 {% block main %}{% endblock %}
             </div>
-            <div class="col-sm-3">
+            <aside class="col-sm-3">
                 {% block sidebar %}{% endblock %}
-            </div>
+            </aside>
         </div>
     </main>
 
     {% block footer %}
-        <footer class="py-4 mt-5" style="background-color: #FFFFFF;">
+        <footer class="py-4 mt-5 bg-white border-top">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 text-muted">
@@ -132,8 +138,9 @@
         {{ encore_entry_script_tags('app') }}
         {% block importmap %}{{ importmap('app') }}{% endblock %}
         <script>
-            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-            tooltipTriggerList.forEach(t => new bootstrap.Tooltip(t));
+            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+                new bootstrap.Tooltip(el);
+            });
         </script>
     {% endblock %}
 </body>
