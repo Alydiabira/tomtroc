@@ -1,19 +1,15 @@
 /* Base styles */
-body {
-  background-color: #F5F3EF; /* couleur de fond principale */
-  font-family: 'Inter', sans-serif;
+html, body {
   margin: 0;
   padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #F5F3EF;
   color: #212529;
+  box-sizing: border-box;
 }
 
 body:not(#homepage) {
-    padding-top: 0px;
-}
-
-html {
-  margin: 0;
-  padding: 0;
+  padding-top: 0;
 }
 
 .row {
@@ -26,41 +22,76 @@ html {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
-* {
-  box-sizing: border-box;
-}
 
+/* Theme wrapper */
 .tomtroc-theme {
-    background-color: #F5F3EF;
-    color: #212529;
-    font-family: 'Inter', sans-serif;
-    min-height: 100vh;
+  background-color: #F5F3EF;
+  color: #212529;
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
 }
 
-.tomtroc-theme h1, .tomtroc-theme h2 {
-    color: #2c3e50;
-    font-weight: 600;
+.tomtroc-theme h1,
+.tomtroc-theme h2 {
+  color: #2c3e50;
+  font-weight: 600;
 }
 
-.card {
+/* Section backgrounds */
+.bg-hero,
+.bg-books,
+.bg-works,
+.bg-values {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+.bg-hero,
+.bg-works,
+.bg-values {
+  background-color: #F5F3EF;
+}
+
+.bg-books {
+  background-color: #FAF9F7;
+}
+
+/* Cards */
+.card,
+.book-card {
   background-color: #ffffff;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   padding: 20px;
+  transition: transform 0.2s ease;
 }
 
-
-.btn-success {
-    background-color: #4CAF50;
-    border-radius: 50px;
-    border: none;
+.book-card:hover {
+  transform: translateY(-4px);
 }
 
+/* Buttons */
+.btn-success,
+.btn-tomtroc,
+.send-button {
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 20px;
+  color: white;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
 
+.btn-success:hover,
+.btn-tomtroc:hover,
+.send-button:hover {
+  background-color: #45A049;
+}
 
 /* Navbar */
 .navbar {
-  background-color: #ffffff;
+  background-color: #F5F3EF;
   border-bottom: 1px solid #eaeaea;
 }
 
@@ -74,25 +105,6 @@ html {
   color: #4CAF50;
   border-bottom: 2px solid #4CAF50;
 }
-
-
-/* Buttons */
-.btn-success,
-.send-button {
-  background-color: #4CAF50;
-  border: none;
-  border-radius: 50px;
-  padding: 10px 20px;
-  color: white;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
-}
-
-.btn-success:hover,
-.send-button:hover {
-  background-color: #45A049;
-}
-
 
 /* Form styling */
 input,
@@ -111,7 +123,6 @@ textarea::placeholder {
   color: #aaa;
   font-style: italic;
 }
-
 
 /* Chat container */
 .conversation-container {
@@ -202,11 +213,11 @@ textarea::placeholder {
 }
 
 .login-background {
-  background-image: url('/images/bookshelf.jpg');
+  background-image: url('../images/avatars/aly.jpg');
 }
 
 .register-background {
-  background-image: url('/images/register-background.jpg');
+  background-image: url('../images/avatars/aly.jpg');
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -236,6 +247,7 @@ textarea::placeholder {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Footer */
 footer {
   background-color: #ffffff;
   border-top: 1px solid #eaeaea;
@@ -244,9 +256,11 @@ footer {
   color: #666;
 }
 
-
+/* Responsive */
 @media (max-width: 768px) {
-  .card, .form-wrapper, .conversation-container {
+  .card,
+  .form-wrapper,
+  .conversation-container {
     padding: 16px;
     border-radius: 12px;
   }
