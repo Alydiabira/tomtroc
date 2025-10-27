@@ -4,50 +4,62 @@
 {% block body_id %}login{% endblock %}
 
 {% block main %}
-<div class="login-background">
-    <div class="login-wrapper shadow-lg rounded p-4">
-        <div class="text-center mb-4">
-            <img src="{{ asset('images/logo-tomtroc.svg') }}" alt="TomTroc" height="48">
-            <h2 class="mt-2">Se connecter à TomTroc</h2>
-        </div>
+<div class="login-background d-flex align-items-center justify-content-center">
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <!-- Formulaire à gauche -->
+            <div class="col-lg-5 col-md-8">
+                <div class="login-wrapper shadow-lg rounded-4 p-4">
+                    <div class="text-center mb-4">
+                        <img src="{{ asset('images/logo-tomtroc.svg') }}" alt="Logo TomTroc" height="48">
+                        <h2 class="mt-2">Se connecter à TomTroc</h2>
+                    </div>
 
-        {% if error %}
-            <div class="alert alert-danger" role="alert">
-                {{ error.messageKey|trans(error.messageData, 'security') }}
-            </div>
-        {% endif %}
+                    {% if error %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                        </div>
+                    {% endif %}
 
-        <form method="post" action="{{ path('app_login', {'_locale': app.request.locale}) }}">
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <form method="post" action="{{ path('app_login', {'_locale': app.request.locale}) }}">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <div class="mb-3">
-                <label for="inputEmail" class="form-label">Email</label>
-                <input type="text" id="inputEmail" name="_username" value="{{ last_username }}" required autofocus class="form-control" {{ stimulus_target('login', 'email') }}>
-            </div>
+                        <div class="mb-3">
+                            <label for="inputEmail" class="form-label">Email</label>
+                            <input type="text" id="inputEmail" name="_username" value="{{ last_username }}" required autofocus class="form-control" {{ stimulus_target('login', 'email') }}>
+                        </div>
 
-            <div class="mb-3">
-                <label for="inputPassword" class="form-label">Mot de passe</label>
-                <div class="input-group">
-                    <input type="password" id="inputPassword" name="_password" required class="form-control" {{ stimulus_target('login', 'password') }}>
-                    <button type="button" class="btn btn-outline-secondary" {{ stimulus_action('login', 'togglePasswordInputType') }}>
-                        <twig:ux:icon name="tabler:eye" />
-                    </button>
+                        <div class="mb-3">
+                            <label for="inputPassword" class="form-label">Mot de passe</label>
+                            <div class="input-group">
+                                <input type="password" id="inputPassword" name="_password" required class="form-control" {{ stimulus_target('login', 'password') }}>
+                                <button type="button" class="btn btn-outline-secondary" {{ stimulus_action('login', 'togglePasswordInputType') }}>
+                                    <twig:ux:icon name="tabler:eye" />
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input type="checkbox" class="form-check-input" id="remember_me" name="_remember_me" checked>
+                            <label class="form-check-label" for="remember_me">Se souvenir de moi</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100 rounded-pill">
+                            <twig:ux:icon name="tabler:login"/> Se connecter
+                        </button>
+
+                        <p class="text-center mt-3">
+                            <a href="{{ path('app_register') }}">Pas encore inscrit ? Créez un compte</a>
+                        </p>
+                    </form>
                 </div>
             </div>
 
-            <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" id="remember_me" name="_remember_me" checked>
-                <label class="form-check-label" for="remember_me">Se souvenir de moi</label>
+            <!-- Image à droite -->
+            <div class="col-lg-6 d-none d-lg-block text-center">
+                <img src="{{ asset('images/bookshelf.jpg') }}" alt="Étagère de livres" class="img-fluid rounded-4 shadow-lg" style="max-height: 500px;">
             </div>
-
-            <button type="submit" class="btn btn-success w-100">
-                <twig:ux:icon name="tabler:login"/> Se connecter
-            </button>
-
-            <p class="text-center mt-3">
-                <a href="{{ path('app_register') }}">Pas encore inscrit ? Créez un compte</a>
-            </p>
-        </form>
+        </div>
     </div>
 </div>
 {% endblock %}
