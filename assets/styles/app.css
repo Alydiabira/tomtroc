@@ -257,3 +257,29 @@ footer {
     display: none;
   }
 }
+
+
+/* Auth layout image */
+.bookshelf-img {
+  max-height: 500px;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.6s ease-in-out;
+  object-fit: cover;
+}
+
+/* Centrage vertical */
+.auth-background {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 60px 0;
+}
+
+/* Responsive image */
+@media (max-width: 768px) {
+  .bookshelf-img {
+    display: none;
+  }
+}
