@@ -1,3 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conversation - TomTroc{% endblock %}
+{% block body_id %}Conversation{% endblock %}
+
 {% block main %}
 <div class="container mt-4 conversation-container">
     <h2 class="mb-4">💬 Conversation avec {{ contact.pseudo ?: contact.username }}</h2>
