@@ -4,10 +4,10 @@
 
 {% block main %}
 
-
 <!-- Hero Section -->
-<section class="bg-Hero text-center">
+<section class="bg-Hero text-center py-5">
     <div class="container">
+        <img src="{{ asset('images/hero-books.jpg') }}" alt="Livres en vitrine" class="img-fluid mb-4 rounded shadow">
         <h1 class="display-4">📚 Rejoignez nos lecteurs passionnés</h1>
         <p class="lead">Partagez vos livres et découvrez ceux des autres</p>
         <a href="{{ path('book_index') }}" class="btn btn-success btn-lg mt-3">Commencer</a>
@@ -15,15 +15,17 @@
 </section>
 
 <!-- Latest Books -->
-<section class="bg-Books text-center">
+<section class="bg-Books text-center py-5">
     <div class="container">
         <h2 class="text-center mb-4">Les derniers livres ajoutés</h2>
         <div class="row justify-content-center">
             {% for book in books %}
-                <div class="col-md-3 mb-4">
+                <div class="col-md-3 col-sm-6 mb-4">
                     <div class="card shadow-sm h-100">
                         {% if book.coverUrl %}
-                            <img src="{{ book.coverUrl }}" class="card-img-top" alt="{{ book.title }}">
+                            <img src="{{ asset(book.coverUrl) }}" class="card-img-top" alt="{{ book.title }}">
+                        {% else %}
+                            <img src="{{ asset('images/default-cover.jpg') }}" class="card-img-top" alt="Couverture manquante">
                         {% endif %}
                         <div class="card-body">
                             <h5 class="card-title">{{ book.title }}</h5>
@@ -40,20 +42,20 @@
 </section>
 
 <!-- How It Works -->
-<section class="bg-Works text-center">
+<section class="bg-Works text-center py-5">
     <div class="container">
         <h2 class="text-center mb-4">Comment ça marche ?</h2>
         <div class="row text-center">
-            <div class="col-md-4">
-                <div class="fs-1">📖</div>
+            <div class="col-md-4 mb-4">
+                <img src="{{ asset('images/step1.png') }}" alt="Ajoutez vos livres" class="img-fluid mb-2" width="80">
                 <p class="mt-2">1. Ajoutez vos livres</p>
             </div>
-            <div class="col-md-4">
-                <div class="fs-1">🔍</div>
+            <div class="col-md-4 mb-4">
+                <img src="{{ asset('images/step2.png') }}" alt="Choisissez un livre" class="img-fluid mb-2" width="80">
                 <p class="mt-2">2. Choisissez un livre</p>
             </div>
-            <div class="col-md-4">
-                <div class="fs-1">📦</div>
+            <div class="col-md-4 mb-4">
+                <img src="{{ asset('images/step3.png') }}" alt="Recevez-le chez vous" class="img-fluid mb-2" width="80">
                 <p class="mt-2">3. Recevez-le chez vous</p>
             </div>
         </div>
@@ -61,15 +63,17 @@
 </section>
 
 <!-- Our Values -->
-<section class="bg-Values text-center">
+<section class="bg-Values text-center py-5">
     <div class="container text-center">
         <h2 class="mb-4">Nos valeurs</h2>
-        <p class="lead">Chez Tom Troc, nous mettons l'accent sur le partage, la découverte et la communauté. Nos valeurs sont ancrées dans notre passion pour les livres et notre désir de créer des liens entre les lecteurs. Nous croyons en la puissance des histoires pour rassembler les gens et inspirer des conversations enrichissantes.
-
-Notre association a été fondée avec une conviction profonde : chaque livre mérite d'être lu et partagé. 
-
-Nous sommes passionnés par la création d'une plateforme conviviale qui permet aux lecteurs de se connecter, de partager leurs découvertes littéraires et d'échanger des livres qui attendent patiemment sur les étagères..</p>
+        <img src="{{ asset('images/bookshelf-values.jpg') }}" alt="Nos valeurs TomTroc" class="img-fluid rounded shadow mb-4">
+        <p class="lead px-3">
+            Chez Tom Troc, nous mettons l'accent sur le partage, la découverte et la communauté. Nos valeurs sont ancrées dans notre passion pour les livres et notre désir de créer des liens entre les lecteurs. Nous croyons en la puissance des histoires pour rassembler les gens et inspirer des conversations enrichissantes.<br><br>
+            Notre association a été fondée avec une conviction profonde : chaque livre mérite d'être lu et partagé.<br><br>
+            Nous sommes passionnés par la création d'une plateforme conviviale qui permet aux lecteurs de se connecter, de partager leurs découvertes littéraires et d'échanger des livres qui attendent patiemment sur les étagères.
+        </p>
         <div class="fs-1 text-danger mt-3">❤️</div>
     </div>
 </section>
+
 {% endblock %}
