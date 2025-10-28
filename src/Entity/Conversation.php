@@ -31,6 +31,20 @@ class Conversation
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeImmutable $lastMessageAt = null;
+
+    public function getInterlocutor(User $currentUser): ?User
+{
+    if ($this->getUser1() === $currentUser) {
+        return $this->getUser2();
+    }
+
+    if ($this->getUser2() === $currentUser) {
+        return $this->getUser1();
+    }
+
+    return null; // au cas où l'utilisateur n'est pas dans la conversation
+}
+
     public function isParticipant(User $user): bool
     {
         return $this->user1 === $user || $this->user2 === $user;
