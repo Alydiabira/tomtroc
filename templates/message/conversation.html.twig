@@ -1,35 +1,62 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Conversation - TomTroc{% endblock %}
-{% block body_id %}Conversation{% endblock %}
+{% block title %}converstion - TomTroc{% endblock %}
+{% block body_id %}converstion{% endblock %}
 
 {% block main %}
-<div class="container mt-4 conversation-container">
-    <h2 class="mb-4">💬 Conversation avec {{ contact.pseudo ?: contact.username }}</h2>
+<div class="container-fluid mt-4 conversation-container">
+    <div class="row">
+        <!-- Colonne gauche : Liste des contacts -->
+        <div class="col-md-4 col-12 mb-4 mb-md-0 contacts-list">
+            <h4 class="mb-3">👥 Tes contacts</h4>
+            <ul class="list-group">
+                {% for conv in conversations %}
+                    {% set interlocutor = conv.getInterlocutor(app.user) %}
+                    {% set avatarPath = interlocutor.getAvatar() ?? 'images/default-avatar.png' %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center {% if conv.id == conversation.id %}active{% endif %}">
+                        <a href="{{ path('conversation_view', {id: conv.id}) }}" class="text-decoration-none text-dark w-100 d-flex align-items-center">
+                            <img src="{{ asset(avatarPath) }}" alt="Avatar" class="rounded-circle me-2" width="32" height="32">
+                            <span>{{ interlocutor.pseudo ?: interlocutor.username }}</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="list-group-item text-muted">Aucun contact pour le moment.</li>
+                {% endfor %}
+            </ul>
+        </div>
 
-    <div class="chat-window">
-        {% if messages|length > 0 %}
-            {% for message in messages %}
-                {% set isMine = message.isMine(app.user) %}
-                <div class="message-row {{ isMine ? 'sent' : 'received' }}">
-                    <div class="avatar">
-                        <img src="{{ asset(message.getSenderAvatar()) }}" alt="Avatar">
-                    </div>
-                    <div class="bubble message-bubble {{ isMine ? 'bg-primary text-white' : 'bg-light' }}">
-                        <p class="mb-1">{{ message.content }}</p>
-                        <span class="timestamp">{{ message.getFormattedDate() }}</span>
-                    </div>
+        <!-- Colonne droite : Conversation active -->
+        <div class="col-md-8 col-12">
+            <h2 class="mb-4">💬 Conversation avec {{ contact.pseudo ?: contact.username }}</h2>
+
+            <div class="chat-window mb-3">
+                {% if messages|length > 0 %}
+                    {% for message in messages %}
+                        {% set isMine = message.isMine(app.user) %}
+                        {% set senderAvatar = message.getSenderAvatar() ?? 'images/default-avatar.png' %}
+                        <div class="message-row {{ isMine ? 'sent' : 'received' }}">
+                            <div class="avatar">
+                                <img src="{{ asset(senderAvatar) }}" alt="Avatar" class="rounded-circle me-2" width="32" height="32">
+                            </div>
+                            <div class="bubble message-bubble {{ isMine ? 'bg-primary text-white' : 'bg-light' }}">
+                                <p class="mb-1">{{ message.content }}</p>
+                                <span class="timestamp">{{ message.getFormattedDate() }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">Aucun message pour le moment.</p>
+                {% endif %}
+            </div>
+
+            <form method="POST" action="{{ path('conversation_view', {id: conversation.id}) }}" class="message-form">
+                <div class="input-group">
+                    <textarea name="content" rows="1" class="form-control" placeholder="Écris ton message…" required></textarea>
+                    <button type="submit" class="btn btn-primary">Envoyer</button>
                 </div>
-            {% endfor %}
-        {% else %}
-            <p class="text-muted">Aucun message pour le moment.</p>
-        {% endif %}
+            </form>
+        </div>
     </div>
-
-    <form method="POST" action="{{ path('conversation_view', {id: conversation.id}) }}" class="message-form mt-4">
-        <textarea name="content" rows="1" placeholder="Écris ton message…" required></textarea>
-        <button type="submit" class="send-button">Envoyer</button>
-    </form>
 </div>
 
 <script>
