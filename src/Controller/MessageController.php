@@ -40,12 +40,12 @@ final class MessageController extends AbstractController
     }
 
     #[Route('/messagerie/{id}', name: 'conversation_view', requirements: ['id' => '\d+'])]
-
     public function viewConversation(
         Conversation $conversation,
         Request $request,
         EntityManagerInterface $em,
-        MessageRepository $messageRepo
+        MessageRepository $messageRepo,
+        ConversationRepository $conversationRepo
     ): Response {
         $user = $this->getUser();
         if (!$user instanceof User) {
@@ -58,23 +58,18 @@ final class MessageController extends AbstractController
 
         $contact = $conversation->getOtherParticipant($user);
         $messages = $messageRepo->findBy(['conversation' => $conversation], ['createdAt' => 'ASC']);
-        $conversationRepo = $em->getRepository(Conversation::class);
         $conversations = $conversationRepo->findRecentWithLastMessage($user);
-        // dd($conversations); // ✅ ici tu vois les conversations dès l’ouverture
 
-        // ✅ Marquer les messages comme lus AVANT affichage
-        $hasChanges = false;
+        // Marquer les messages comme lus
         foreach ($messages as $msg) {
             if ($msg->getRecipient() === $user && !$msg->isRead()) {
                 $msg->setIsRead(true);
                 $em->persist($msg);
-                $hasChanges = true;
             }
         }
-        if ($hasChanges) {
-            $em->flush();
-        }
+        $em->flush();
 
+        // Formulaire d'envoi
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
@@ -98,9 +93,9 @@ final class MessageController extends AbstractController
             'messages' => $messages,
             'contact' => $contact,
             'form' => $form->createView(),
+            'conversations' => $conversations,
         ]);
     }
-
 
     #[Route('/start-conversation/{id}', name: 'start_conversation')]
     public function startConversation(
