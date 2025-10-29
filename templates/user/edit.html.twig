@@ -72,11 +72,12 @@
                                     {{ form_row(form.pseudo, {'attr': {'class': 'form-control rounded-pill'}}) }}
                                 </div>
                             </div>
+                                                    <a href="{{ path('user_change_password') }}" class="btn btn-outline-danger w-100 rounded-pill mt-3">🔐 Changer mon mot de passe</a>
+
 
                             <button class="btn btn-success w-100 rounded-pill mt-4">💾 Enregistrer</button>
                         {{ form_end(form) }}
 
-                        <a href="{{ path('user_change_password') }}" class="btn btn-outline-danger w-100 rounded-pill mt-3">🔐 Changer mon mot de passe</a>
                     </div>
                 </div>
             </div>
