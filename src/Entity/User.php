@@ -18,7 +18,7 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'symfony_demo_user')]
 
-#[UniqueEntity(fields: ['email'], message: 'Il existe déjà un compte avec cet email')]
+   #[UniqueEntity(fields: ['email'], message: 'Il existe déjà un compte avec cet email')]
 #[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
