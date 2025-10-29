@@ -17,12 +17,11 @@
                 </div>
 
                 <h2 class="h5">{{ user.username }}</h2>
-                <p class="text-muted">Email : {{ user.email }}</p>
-                <p class="text-muted">📚 {{ user.books|length }} livre{{ user.books|length > 1 ? 's' : '' }}</p>
-
+                <p class="text-muted small">Membre depuis {{ user.createdAt|date('Y') }}</p>
                 <div class="d-grid gap-2 mt-3">
-                    <a href="{{ path('user_edit') }}" class="btn btn-outline-primary rounded-pill">Modifier mon profil</a>
-                    <a href="{{ path('user_change_password') }}" class="btn btn-outline-secondary rounded-pill">Changer mon mot de passe</a>
+                    {# <a href="{{ path('user_edit') }}" class="btn btn-outline-primary rounded-pill">Modifier mon profil</a> #}
+                    <p class="fw-bold mb-1">📚 Bibliothèque</p>
+                    <p class="text-muted">{{ user.books|length }} livre{{ user.books|length > 1 ? 's' : '' }}</p>
                     <a href="{{ path('messagerie') }}" class="btn btn-primary rounded-pill">Voir mes conversations</a>
                 </div>
             </div>
@@ -30,7 +29,7 @@
 
         <!-- 📚 Bloc droite : Liste des livres -->
         <div class="col-md-8">
-            <div class="card shadow-sm rounded-4">
+            <div class="">
                 <div class="card-body">
                     <h3 class="h5 mb-4 text-center">Mes livres</h3>
 
@@ -42,8 +41,8 @@
                                     <th>📖 Titre</th>
                                     <th>👤 Auteur</th>
                                     <th>📝 Description</th>
-                                    <th>📦 Disponibilité</th>
-                                    <th class="text-end">⚙️ Action</th>
+                                    {# <th>📦 Disponibilité</th>
+                                    <th class="text-end">⚙️ Action</th> #}
                                 </tr>
                             </thead>
                             <tbody>
@@ -70,21 +69,9 @@
                                         </td>
 
                                         <!-- DISPONIBILITÉ -->
-                                        <td>
-                                            <span class="badge {% if book.available %}bg-success{% else %}bg-danger{% endif %}">
-                                                {{ book.available ? 'Disponible' : 'Non disponible' }}
-                                            </span>
-                                        </td>
 
                                         <!-- ACTION -->
-                                        <td class="text-end">
-                                            {% if app.user and app.user.id == user.id %}
-                                                <div class="d-inline-flex gap-2">
-                                                    <a href="{{ path('book_edit', {id: book.id}) }}" class="btn btn-sm btn-outline-secondary rounded-pill">Éditer</a>
-                                                    <a href="{{ path('book_delete', {id: book.id}) }}" class="btn btn-sm btn-outline-danger rounded-pill">Supprimer</a>
-                                                </div>
-                                            {% endif %}
-                                        </td>
+                                        
                                     </tr>
                                 {% endfor %}
                             </tbody>
