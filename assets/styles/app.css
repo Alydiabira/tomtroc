@@ -196,3 +196,47 @@ html, body {
     font-size: 14px;
   }
 }
+
+
+.account-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.account-card {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 2rem;
+    max-width: 800px;
+    width: 100%;
+}
+
+.avatar-block {
+    flex: 1 1 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+.info-block {
+    flex: 2 1 300px;
+}
+
+.button-group {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+}
