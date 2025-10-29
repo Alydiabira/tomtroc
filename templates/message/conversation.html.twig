@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}converstion - TomTroc{% endblock %}
-{% block body_id %}converstion{% endblock %}
+{% block title %}Conversation - TomTroc{% endblock %}
+{% block body_id %}conversation{% endblock %}
 
 {% block main %}
 <div class="container-fluid mt-4 conversation-container">
     <div class="row">
-        <!-- Colonne gauche : Liste des contacts -->
+        <!-- 🧑‍💬 Colonne gauche : Liste des contacts -->
         <div class="col-md-4 col-12 mb-4 mb-md-0 contacts-list">
             <h4 class="mb-3">👥 Tes contacts</h4>
             <ul class="list-group">
@@ -25,7 +25,7 @@
             </ul>
         </div>
 
-        <!-- Colonne droite : Conversation active -->
+        <!-- 💬 Colonne droite : Conversation active -->
         <div class="col-md-8 col-12">
             <h2 class="mb-4">💬 Conversation avec {{ contact.pseudo ?: contact.username }}</h2>
 
@@ -49,12 +49,21 @@
                 {% endif %}
             </div>
 
-            <form method="POST" action="{{ path('conversation_view', {id: conversation.id}) }}" class="message-form">
-                <div class="input-group">
-                    <textarea name="content" rows="1" class="form-control" placeholder="Écris ton message…" required></textarea>
-                    <button type="submit" class="btn btn-primary">Envoyer</button>
+            {% if app.user and form is defined %}
+                {# ✅ Formulaire visible uniquement si connecté #}
+                <form method="POST" action="{{ path('conversation_view', {id: conversation.id}) }}" class="message-form">
+                    <div class="input-group">
+                        {{ form_widget(form.content, {'attr': {'class': 'form-control', 'placeholder': 'Écris ton message…'}}) }}
+                        <button type="submit" class="btn btn-primary">Envoyer</button>
+                    </div>
+                </form>
+            {% else %}
+                {# 🔒 Message d'invitation à se connecter #}
+                <div class="alert alert-info text-center mt-4">
+                    Connecte-toi pour envoyer un message 💌
+                    <a href="{{ path('app_login') }}" class="btn btn-sm btn-outline-primary rounded-pill ms-2">Connexion</a>
                 </div>
-            </form>
+            {% endif %}
         </div>
     </div>
 </div>
