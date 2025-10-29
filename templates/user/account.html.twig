@@ -1,25 +1,98 @@
-{# templates/user/account.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Mon compte{% endblock %}
 
 {% block main %}
-<div class="account-wrapper">
-    <div class="account-card">
-        <div class="avatar-block">
-            {% if user.avatar %}
-                <img src="{{ asset('uploads/' ~ user.avatar) }}" alt="Avatar de {{ user.username }}" class="avatar-img">
-            {% else %}
-                <img src="{{ asset('images/default-avatar.png') }}" alt="Avatar par défaut" class="avatar-img">
-            {% endif %}
+<div class="container mt-5">
+    <div class="row gy-4">
+        <!-- 🧑‍💼 Bloc gauche : Profil utilisateur -->
+        <div class="col-md-4">
+            <div class="card p-4 shadow-sm rounded-4 text-center">
+                <div class="avatar-block mb-3">
+                    {% if user.avatar %}
+                        <img src="{{ asset('uploads/' ~ user.avatar) }}" alt="Avatar de {{ user.username }}" class="rounded-circle shadow avatar-img" width="120" height="120">
+                    {% else %}
+                        <img src="{{ asset('images/default-avatar.png') }}" alt="Avatar par défaut" class="rounded-circle shadow avatar-img" width="120" height="120">
+                    {% endif %}
+                </div>
+
+                <h2 class="h5">{{ user.username }}</h2>
+                <p class="text-muted">Email : {{ user.email }}</p>
+                <p class="text-muted">📚 {{ user.books|length }} livre{{ user.books|length > 1 ? 's' : '' }}</p>
+
+                <div class="d-grid gap-2 mt-3">
+                    <a href="{{ path('user_edit') }}" class="btn btn-outline-primary rounded-pill">Modifier mon profil</a>
+                    <a href="{{ path('user_change_password') }}" class="btn btn-outline-secondary rounded-pill">Changer mon mot de passe</a>
+                    <a href="{{ path('messagerie') }}" class="btn btn-primary rounded-pill">Voir mes conversations</a>
+                </div>
+            </div>
         </div>
-        <div class="info-block">
-            <h2>{{ user.username }}</h2>
-            <p><strong>Email :</strong> {{ user.email }}</p>
-            <p><strong>Nombre de livres :</strong> {{ user.books|length }}</p>
-            <div class="button-group">
-                <a href="{{ path('user_edit') }}" class="btn btn-primary">Modifier mon profil</a>
-                <a href="{{ path('user_change_password') }}" class="btn btn-secondary">Changer mon mot de passe</a>
+
+        <!-- 📚 Bloc droite : Liste des livres -->
+        <div class="col-md-8">
+            <div class="card shadow-sm rounded-4">
+                <div class="card-body">
+                    <h3 class="h5 mb-4 text-center">Mes livres</h3>
+
+                    {% if user.books|length > 0 %}
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>📷 Photo</th>
+                                    <th>📖 Titre</th>
+                                    <th>👤 Auteur</th>
+                                    <th>📝 Description</th>
+                                    <th>📦 Disponibilité</th>
+                                    <th class="text-end">⚙️ Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for book in user.books %}
+                                    <tr>
+                                        <!-- PHOTO -->
+                                        <td>
+                                            {% if book.coverImage %}
+                                                <img src="{{ asset('uploads/covers/' ~ book.coverImage) }}" alt="{{ book.title }}" width="48" height="64" class="rounded shadow-sm">
+                                            {% else %}
+                                                <img src="{{ asset('images/default-book.jpg') }}" alt="Livre" width="48" height="64" class="rounded shadow-sm">
+                                            {% endif %}
+                                        </td>
+
+                                        <!-- TITRE -->
+                                        <td>{{ book.title }}</td>
+
+                                        <!-- AUTEUR -->
+                                        <td>{{ book.author }}</td>
+
+                                        <!-- DESCRIPTION -->
+                                        <td class="text-truncate" style="max-width: 250px;">
+                                            {{ book.description|length > 120 ? book.description|slice(0, 120) ~ '…' : book.description }}
+                                        </td>
+
+                                        <!-- DISPONIBILITÉ -->
+                                        <td>
+                                            <span class="badge {% if book.available %}bg-success{% else %}bg-danger{% endif %}">
+                                                {{ book.available ? 'Disponible' : 'Non disponible' }}
+                                            </span>
+                                        </td>
+
+                                        <!-- ACTION -->
+                                        <td class="text-end">
+                                            {% if app.user and app.user.id == user.id %}
+                                                <div class="d-inline-flex gap-2">
+                                                    <a href="{{ path('book_edit', {id: book.id}) }}" class="btn btn-sm btn-outline-secondary rounded-pill">Éditer</a>
+                                                    <a href="{{ path('book_delete', {id: book.id}) }}" class="btn btn-sm btn-outline-danger rounded-pill">Supprimer</a>
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p class="text-muted text-center">Aucun livre ajouté pour le moment.</p>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
