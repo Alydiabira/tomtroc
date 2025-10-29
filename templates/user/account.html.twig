@@ -1,0 +1,27 @@
+{# templates/user/account.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block main %}
+<div class="account-wrapper">
+    <div class="account-card">
+        <div class="avatar-block">
+            {% if user.avatar %}
+                <img src="{{ asset('uploads/' ~ user.avatar) }}" alt="Avatar de {{ user.username }}" class="avatar-img">
+            {% else %}
+                <img src="{{ asset('images/default-avatar.png') }}" alt="Avatar par défaut" class="avatar-img">
+            {% endif %}
+        </div>
+        <div class="info-block">
+            <h2>{{ user.username }}</h2>
+            <p><strong>Email :</strong> {{ user.email }}</p>
+            <p><strong>Nombre de livres :</strong> {{ user.books|length }}</p>
+            <div class="button-group">
+                <a href="{{ path('user_edit') }}" class="btn btn-primary">Modifier mon profil</a>
+                <a href="{{ path('user_change_password') }}" class="btn btn-secondary">Changer mon mot de passe</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
