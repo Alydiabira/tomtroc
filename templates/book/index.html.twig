@@ -6,7 +6,7 @@
 
 {% block main %}
 <div class="container mt-5">
-    <h2 class="mb-4 text-center">📚 Nos livres à l’échange dfbdfbdf</h2>
+    <h2 class="mb-4 text-center">📚 Nos livres à l’échange </h2>
 
     {% if books|length > 0 %}
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
@@ -23,7 +23,7 @@
                             <h5 class="card-title">{{ book.title }}</h5>
                             <p class="card-text text-muted">{{ book.author }}</p>
 
-                            <span class="badge 
+                      a      <span class="badge 
                                 {% if book.available %}
                                     bg-success
                                 {% else %}
