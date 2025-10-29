@@ -15,34 +15,31 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('fullName', TextType::class, [
-                'label' => 'Nom complet',
-                'attr' => ['class' => 'form-control rounded-pill'],
-            ])
+            // ->add('fullName', TextType::class, [
+            //     'label' => 'Nom complet',
+            //     'attr' => ['class' => 'form-control rounded-pill'],
+            // ])
             ->add('email', EmailType::class, [
                 'label' => 'Adresse email',
                 'attr' => ['class' => 'form-control rounded-pill'],
             ])
-            ->add('phoneNumber', TextType::class, [
-                'label' => 'Téléphone',
-                'required' => false,
-                'attr' => ['class' => 'form-control rounded-pill'],
-            ])
-            ->add('message', TextareaType::class, [
-                'label' => 'Message personnel',
-                'required' => false,
-                'attr' => ['class' => 'form-control rounded-pill', 'rows' => 4],
-            ])
+            // ->add('phoneNumber', TextType::class, [
+            //     'label' => 'Téléphone',
+            //     'required' => false,
+            //     'attr' => ['class' => 'form-control rounded-pill'],
+            // ])
+            // ->add('message', TextareaType::class, [
+            //     'label' => 'Message personnel',
+            //     'required' => false,
+            //     'attr' => ['class' => 'form-control rounded-pill', 'rows' => 4],
+            // ])
             ->add('pseudo', TextType::class, [
                 'label' => 'Pseudo',
                 'required' => false,
                 'attr' => ['class' => 'form-control rounded-pill'],
             ])
-            ->add('availability', TextType::class, [
-                'label' => 'Disponibilité',
-                'required' => false,
-                'attr' => ['class' => 'form-control rounded-pill', 'placeholder' => 'Ex: Week-end, Soirs, Sur rendez-vous…'],
-            ]);
+            //  
+            ;
             // Tu peux ajouter 'avatar' ici si tu veux gérer l'upload dans ce formulaire
     }
 
