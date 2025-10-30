@@ -11,6 +11,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Book;
 use App\Entity\User;
 use App\Form\ChangePasswordType;
 use App\Form\UserType;
@@ -45,9 +46,7 @@ final class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
-            $this->addFlash('success', 'user.updated_successfully');
-
+            $this->addFlash('success', '✅ Profil mis à jour avec succès !');
             return $this->redirectToRoute('user_edit', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -113,6 +112,25 @@ final class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/books/{id}/delete', name: 'user_book_delete', methods: ['POST'])]
+    public function deleteBook(
+        #[CurrentUser] User $user,
+        Book $book,
+        Request $request,
+        EntityManagerInterface $entityManager,
+    ): Response {
+        if ($book->getOwner() !== $user) {
+            throw $this->createAccessDeniedException('Tu ne peux supprimer que tes propres livres.');
+        }
+
+        if ($this->isCsrfTokenValid('delete' . $book->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($book);
+            $entityManager->flush();
+            $this->addFlash('danger', '📕 Livre supprimé.');
+        }
+
+        return $this->redirectToRoute('user_edit');
+    }
 
 
 }
