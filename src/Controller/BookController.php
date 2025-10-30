@@ -68,29 +68,32 @@ class BookController extends AbstractController
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $coverFile = $form->get('coverImage')->getData();
+        // 🔧 Gestion du fichier uploadé via le formulaire caché
+        $coverFile = $request->files->get('coverImage');
+        if ($coverFile) {
+            $originalFilename = pathinfo($coverFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename . '-' . uniqid() . '.' . $coverFile->guessExtension();
 
-            if ($coverFile) {
-                $originalFilename = pathinfo($coverFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $coverFile->guessExtension();
-
-                try {
-                    $coverFile->move(
-                        $this->getParameter('covers_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    $this->addFlash('danger', 'Erreur lors de l’upload de l’image.');
-                }
-
+            try {
+                $coverFile->move(
+                    $this->getParameter('covers_directory'),
+                    $newFilename
+                );
                 $book->setCoverImage($newFilename);
-            }
+                $em->flush();
 
+                $this->addFlash('success', '📸 Nouvelle image enregistrée !');
+                return $this->redirectToRoute('book_edit', ['id' => $book->getId()]);
+            } catch (FileException $e) {
+                $this->addFlash('danger', 'Erreur lors de l’upload de l’image.');
+            }
+        }
+
+        // ✏️ Traitement du formulaire principal
+        if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
             $this->addFlash('success', '📘 Livre mis à jour !');
-
             return $this->redirectToRoute('book_index');
         }
 
@@ -99,6 +102,7 @@ class BookController extends AbstractController
             'book' => $book,
         ]);
     }
+
 
 
 
