@@ -1,19 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Profil de {{ user.username }}{% endblock %}
+{% block title %}Mon compte{% endblock %}
 
 {% block main %}
-{# 🔒 Sécurité : empêcher l'affichage de son propre profil ici #}
-{% if app.user and app.user.id == user.id %}
-    <div class="container mt-5">
-        <div class="alert alert-warning text-center rounded-4 shadow-sm">
-            🛑 Ce profil est le vôtre. <a href="{{ path('user_account') }}" class="btn btn-sm btn-outline-primary rounded-pill ms-2">Accéder à mon compte</a>
-        </div>
-    </div>
-{% else %}
 <div class="container mt-5">
     <div class="row gy-4">
-        <!-- 🧑‍💼 Bloc gauche : Profil public -->
+        <!-- 🧑‍💼 Bloc gauche : Profil utilisateur -->
         <div class="col-md-4">
             <div class="card p-4 shadow-sm rounded-4 text-center">
                 <div class="mb-4">
@@ -28,7 +20,7 @@
                 <p class="text-muted small">Membre depuis {{ user.createdAt|date('Y') }}</p>
                 <p class="text-muted small">📚 {{ user.books|length }} livre{{ user.books|length > 1 ? 's' : '' }}</p>
 
-                {% if app.user %}
+                {% if app.user and app.user.id != user.id %}
                     <a href="{{ path('start_conversation', {id: user.id}) }}" class="btn btn-success rounded-pill w-100 mt-3">💬 Écrire un message</a>
                 {% endif %}
 
@@ -51,7 +43,7 @@
             </div>
         </div>
 
-        <!-- 📚 Bloc droite : Livres disponibles -->
+        <!-- 📚 Bloc droite : Liste des livres -->
         <div class="col-md-8">
             <div class="card p-4 shadow-sm rounded-4">
                 <h3 class="h5 mb-4 text-center">📚 Livres de {{ user.username }}</h3>
@@ -92,5 +84,4 @@
         </div>
     </div>
 </div>
-{% endif %}
 {% endblock %}
