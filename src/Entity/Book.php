@@ -4,10 +4,11 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
+use App\Repository\BookRepository;
 use App\Entity\User;
-use Symfony\Component\String\Slugger\SluggerInterface;
+
 
 
 #[ORM\Entity]
@@ -57,6 +58,7 @@ class Book
         $this->slug = $slug;
         return $this;
     }
+
 
     public function getCoverFilename(): ?string
     {
