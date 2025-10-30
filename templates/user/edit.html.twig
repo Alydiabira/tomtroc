@@ -16,38 +16,19 @@
                         {% endif %}
                     </div>
 
-                    <a href="#" onclick="document.getElementById('avatar-upload').click()" class="btn btn-sm btn-outline-secondary rounded-pill mb-3">Modifier</a>
+
+                    <a href="#" onclick="document.getElementById('avatar-upload').click()">Modifier</a>
 
                     <form method="POST" action="{{ path('user_avatar') }}" enctype="multipart/form-data" style="display: none;">
                         <input type="file" name="avatar" id="avatar-upload" onchange="this.form.submit()">
                     </form>
 
 
-                    {# {% if user.availability %}
-                        <div class="mb-2">
-                            <i class="bi bi-calendar-event-fill text-primary me-2"></i>
-                            <span class="badge 
-                                {% if user.availability == 'Tous les jours' %}
-                                    bg-success
-                                {% elseif user.availability == 'Week-end uniquement' %}
-                                    bg-warning text-dark
-                                {% elseif user.availability == 'Soirs en semaine' %}
-                                    bg-info text-dark
-                                {% else %}
-                                    bg-secondary
-                                {% endif %}
-                            " data-bs-toggle="tooltip" title="Disponible pour échanger 📚">
-                                {{ user.availability }}
-                            </span>
-                        </div>
-                    {% endif %} #}
-
                     <hr>
                     <h4 class="fw-semibold">{{ user.pseudo }}</h4>
                     <p class="text-muted small">Membre depuis {{ user.createdAt|date('Y') }}</p>
                     <p class="fw-bold mb-1">📚 Bibliothèque</p>
                     <p class="text-muted">{{ user.books|length }} livre{{ user.books|length > 1 ? 's' : '' }}</p>
-                    <a href="{{ path('user_books') }}" class="btn btn-outline-primary rounded-pill w-100 mb-2">Voir mes livres</a>
 
                     {% if app.user and app.user.id != user.id %}
                         <a href="{{ path('start_conversation', {id: user.id}) }}" class="btn btn-primary rounded-pill w-100">
@@ -139,7 +120,10 @@
                                         {% if app.user and app.user.id == user.id %}
                                         <div class="d-inline-flex gap-2">
                                             <a href="{{ path('book_edit', {id: book.id}) }}" class="btn btn-sm btn-outline-secondary rounded-pill">Éditer</a>
-                                            <a href="{{ path('book_delete', {id: book.id}) }}" class="btn btn-sm btn-outline-danger rounded-pill">Supprimer</a>
+                                        <form method="POST" action="{{ path('user_book_delete', {id: book.id}) }}" class="d-inline" onsubmit="return confirm('🗑️ Es-tu sûr(e) de vouloir supprimer ce livre ? Cette action est irréversible.')">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ book.id) }}">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">Supprimer</button>
+                                        </form>
                                         </div>
                                         {% endif %}
                                     </td>
