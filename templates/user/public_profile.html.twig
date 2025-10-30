@@ -1,66 +1,95 @@
 {% extends 'base.html.twig' %}
-{% block title %}Profil de {{ user.pseudo }}{% endblock %}
+
+{% block title %}Profil de {{ user.pseudo ?: user.username }}{% endblock %}
 
 {% block main %}
+{% if app.user and app.user.id == user.id %}
+    <div class="container mt-5">
+        <div class="alert alert-warning text-center rounded-4 shadow-sm">
+            🛑 Ce profil est le vôtre. <a href="{{ path('user_account') }}" class="btn btn-sm btn-outline-primary rounded-pill ms-2">Accéder à mon compte</a>
+        </div>
+    </div>
+{% else %}
 <div class="container mt-5">
-    <div class="row justify-content-center">
+    <div class="row gy-4">
+        <!-- 🧑‍💼 Bloc gauche : Profil public -->
         <div class="col-md-4">
             <div class="card p-4 shadow-sm rounded-4 text-center">
-                <img src="{{ asset('uploads/' ~ user.avatar|default('default.jpg')) }}" class="rounded-circle mb-3 shadow" width="120" height="120" alt="Avatar">
-                <h4 class="fw-semibold">{{ user.pseudo }}</h4>
-                <p class="text-muted small">Membre depuis {{ user.createdAt|date('Y') }}</p>
+                <div class="mb-4">
+                    {% if user.avatar %}
+                        <img src="{{ asset('uploads/' ~ user.avatar) }}" alt="Avatar de {{ user.pseudo ?: user.username }}" class="rounded-circle shadow" width="120" height="120">
+                    {% else %}
+                        <img src="{{ asset('images/default-avatar.png') }}" alt="Avatar par défaut" class="rounded-circle shadow" width="120" height="120">
+                    {% endif %}
+                </div>
 
-                {% if user.availability %}
-                    <span class="badge 
-                        {% if user.availability == 'Tous les jours' %}
-                            bg-success
-                        {% elseif user.availability == 'Week-end uniquement' %}
-                            bg-warning text-dark
-                        {% elseif user.availability == 'Soirs en semaine' %}
-                            bg-info text-dark
-                        {% else %}
-                            bg-secondary
-                        {% endif %}
-                    ">
-                        {{ user.availability }}
-                    </span>
+                <h4 class="fw-semibold mb-1">{{ user.pseudo ?: user.username }}</h4>
+                <p class="text-muted small">Membre depuis {{ user.createdAt|date('Y') }}</p>
+                <p class="text-muted small">📚 {{ user.books|length }} livre{{ user.books|length > 1 ? 's' : '' }}</p>
+
+                {% if app.user %}
+                    <a href="{{ path('start_conversation', {id: user.id}) }}" class="btn btn-success rounded-pill w-100 mt-3">💬 Écrire un message</a>
                 {% endif %}
 
-                {% if app.user and app.user.id != user.id %}
-                    <a href="{{ path('start_conversation', {id: user.id}) }}" class="btn btn-primary rounded-pill mt-3">
-                        💬 Écrire un message
-                    </a>
+                {% if otherUsers is defined and otherUsers|length > 0 %}
+                    <hr class="my-4">
+                    <p class="fw-bold mb-2">🔍 Autres troqueurs</p>
+                    <ul class="list-unstyled">
+                        {% for other in otherUsers %}
+                            {% if other.id != user.id %}
+                                <li class="mb-2">
+                                    <a href="{{ path('public_profile', {slug: other.slug}) }}" class="d-flex align-items-center text-decoration-none text-muted">
+                                        <img src="{{ asset(other.avatar ? 'uploads/' ~ other.avatar : 'images/default-avatar.png') }}" class="rounded-circle me-2" width="32" height="32" alt="Avatar de {{ other.pseudo ?: other.username }}">
+                                        <span>{{ other.pseudo ?: other.username }}</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
                 {% endif %}
             </div>
         </div>
 
+        <!-- 📚 Bloc droite : Livres disponibles -->
         <div class="col-md-8">
-            <h2 class="h5 mb-4">📚 Livres disponibles</h2>
-            {% if user.books|length > 0 %}
-                <div class="row row-cols-1 row-cols-md-2 g-4">
-                    {% for book in user.books %}
-                    {% if book.available %}
-                        <div class="col">
-                            <div class="card h-100 shadow-sm rounded-4">
-                                {% if book.coverImage %}
-                                    <img src="{{ asset('uploads/covers/' ~ book.coverImage) }}" class="card-img-top rounded-top-4" alt="{{ book.title }}">
-                                {% else %}
-                                    <img src="{{ asset('images/default-book.jpg') }}" class="card-img-top rounded-top-4" alt="Livre">
-                                {% endif %}
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ book.title }}</h5>
-                                    <p class="card-text text-muted">{{ book.author }}</p>
-                                    <a href="{{ path('book_show', {id: book.id}) }}" class="btn btn-sm btn-outline-primary rounded-pill">Voir</a>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-                </div>
-            {% else %}
-                <p class="text-muted">Aucun livre disponible pour le moment.</p>
-            {% endif %}
+            <div class="card p-4 shadow-sm rounded-4">
+                <h3 class="h5 mb-4 text-center">📚 Livres de {{ user.pseudo ?: user.username }}</h3>
+
+                {% if user.books|length > 0 %}
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 64px;">📷</th>
+                                <th>📖 Titre</th>
+                                <th>👤 Auteur</th>
+                                <th>📝 Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for book in user.books %}
+                                <tr>
+                                    <td>
+                                        {% if book.coverImage %}
+                                            <img src="{{ asset('uploads/covers/' ~ book.coverImage) }}" alt="{{ book.title }}" width="48" height="64" class="rounded shadow-sm">
+                                        {% else %}
+                                            <img src="{{ asset('images/default-book.jpg') }}" alt="Livre" width="48" height="64" class="rounded shadow-sm">
+                                        {% endif %}
+                                    </td>
+                                    <td class="fw-semibold">{{ book.title }}</td>
+                                    <td>{{ book.author }}</td>
+                                    <td class="text-truncate" style="max-width: 250px;">
+                                        {{ book.description|length > 120 ? book.description|slice(0, 120) ~ '…' : book.description }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="text-muted text-center">Aucun livre ajouté pour le moment.</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
+{% endif %}
 {% endblock %}
