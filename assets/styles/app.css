@@ -240,3 +240,14 @@ html, body {
     display: flex;
     gap: 1rem;
 }
+
+.hr-mini {
+    width: 60px;
+    height: 1px;
+    background-color: #ddd;
+    border: none;
+    margin: 0.5rem 0;
+    width: 30px;
+
+}
+
