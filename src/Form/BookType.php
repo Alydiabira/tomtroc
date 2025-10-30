@@ -27,28 +27,16 @@ class BookType extends AbstractType
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
             ])
-            ->add('genre', ChoiceType::class, [
-                'label' => 'Genre',
+            
+            ->add('available', ChoiceType::class, [
+                'label' => 'Disponibilité',
                 'choices' => [
-                    'Roman' => 'Roman',
-                    'BD' => 'BD',
-                    'Essai' => 'Essai',
-                    'Thriller' => 'Thriller',
-                    'Fantasy' => 'Fantasy',
-                    'Science-fiction' => 'Science-fiction',
-                    'Développement personnel' => 'Développement personnel',
+                    'Disponible' => true,
+                    'Non disponible' => false,
                 ],
-            ])
-            ->add('available', CheckboxType::class, [
-                'label' => 'Disponible',
-                'required' => false,
-            ]);
-            $builder
-            ->add('coverImage', FileType::class, [
-                'label' => 'Photo de couverture',
-                'required' => false,
-                'mapped' => false, // si tu gères l'upload manuellement
-                'attr' => ['class' => 'form-control'],
+                'expanded' => false,
+                'multiple' => false,
+                'attr' => ['class' => 'form-select rounded-pill'],
             ]);
     }
 
