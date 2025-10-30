@@ -57,6 +57,11 @@
                                     <i class="bi bi-chat-dots"></i> Messagerie
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ _route == 'user_edit' ? 'active' }}" href="{{ path('user_edit') }}">
+                                    <i class="bi bi-person-lines-fill"></i> Mon compte
+                                </a>
+                            </li>
                         </ul>
 
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -67,8 +72,8 @@
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end">
                                         <li>
-                                            <a class="dropdown-item" href="{{ path('user_edit') }}">
-                                                <i class="bi bi-person-lines-fill"></i> Mon compte
+                                            <a class="dropdown-item" href="{{ path('user_account') }}">
+                                                <i class="bi bi-person-lines-fill"></i>public profile
                                             </a>
                                         </li>
                                         <li><hr class="dropdown-divider"></li>
