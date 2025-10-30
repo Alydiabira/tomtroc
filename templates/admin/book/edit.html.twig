@@ -10,12 +10,17 @@
         <!-- 📕 Image à gauche -->
         <div class="col-md-5 text-center">
             {% if book.coverImage %}
-                <img src="{{ asset('images/' ~ book.coverImage) }}" class="img-fluid rounded-4 shadow-sm mb-3" alt="{{ book.title }}">
+                <img src="{{ asset('uploads/covers/' ~ book.coverImage) }}" class="img-fluid rounded-4 shadow-sm mb-3" alt="{{ book.title }}">
             {% else %}
                 <img src="{{ asset('images/default-book.jpg') }}" class="img-fluid rounded-4 shadow-sm mb-3" alt="Livre">
             {% endif %}
 
-            <a href="{{ path('book_edit', {id: book.id}) }}" class="btn btn-outline-secondary rounded-pill">🖼 Modifier la photo</a>
+            <!-- Lien pour modifier la photo -->
+            <a href="#" onclick="document.getElementById('cover-upload').click()" class="btn btn-outline-secondary rounded-pill mb-3">🖼 Modifier la photo</a>
+
+            <form method="POST" action="{{ path('book_edit', {id: book.id}) }}" enctype="multipart/form-data" style="display: none;">
+                <input type="file" name="coverImage" id="cover-upload" onchange="this.form.submit()">
+            </form>
         </div>
 
         <!-- ✏️ Formulaire à droite -->
@@ -35,9 +40,9 @@
                 </div>
                 <div class="mb-3">
                     {{ form_label(form.available) }}
-                    {{ form_widget(form.available, {'attr': {'class': 'form-check-input'}}) }}
+                    {{ form_widget(form.available, {'attr': {'class': 'form-select rounded-pill'}}) }}
                 </div>
-                <button class="btn btn-success rounded-pill">✅ Valider</button>
+                <button class="btn btn-success rounded-pill w-100">✅ Valider</button>
             {{ form_end(form) }}
         </div>
     </div>
