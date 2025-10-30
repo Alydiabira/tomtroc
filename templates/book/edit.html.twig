@@ -4,55 +4,40 @@
 
 {% block main %}
 <div class="container mt-5">
-    <h1 class="mb-4">📘 Modifier le livre</h1>
+    <h1 class="h4 mb-4 text-center">✏️ Modifier les informations</h1>
 
-    {% if book %}
-        <div class="card mb-4 p-3 shadow-sm rounded-4">
-            <div class="row g-3 align-items-center">
-                <div class="col-md-3">
-                    {% if book.coverImage %}
-                        <img src="{{ asset('uploads/covers/' ~ book.coverImage) }}" class="img-fluid rounded shadow-sm" alt="Couverture du livre">
-                    {% else %}
-                        <img src="{{ asset('images/default-book.jpg') }}" class="img-fluid rounded shadow-sm" alt="Pas de couverture">
-                    {% endif %}
-                </div>
-                <div class="col-md-9">
-                    <p><strong>Titre :</strong> {{ book.title }}</p>
-                    <p><strong>Auteur :</strong> {{ book.author }}</p>
-                    <p><strong>Genre :</strong> {{ book.genre }}</p>
-                    <p><strong>Disponible :</strong> {{ book.available ? 'Oui' : 'Non' }}</p>
-                </div>
-            </div>
+    <div class="row">
+        <!-- 📕 Image à gauche -->
+        <div class="col-md-5 text-center">
+            {% if book.coverImage %}
+                <img src="{{ asset('uploads/covers/' ~ book.coverImage) }}" class="img-fluid rounded-4 shadow-sm mb-3" alt="{{ book.title }}">
+            {% else %}
+                <img src="{{ asset('images/default-book.jpg') }}" class="img-fluid rounded-4 shadow-sm mb-3" alt="Livre">
+            {% endif %}
+
+            <a href="{{ path('book_edit', {id: book.id}) }}" class="btn btn-outline-secondary rounded-pill">🖼 Modifier la photo</a>
         </div>
-    {% endif %}
 
-    <div class="card shadow-lg rounded-4">
-        <div class="card-body px-4 py-4">
-            {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        {{ form_row(form.title, {'attr': {'class': 'form-control rounded-pill'}}) }}
-                        {{ form_row(form.author, {'attr': {'class': 'form-control rounded-pill'}}) }}
-                        {{ form_row(form.genre, {'attr': {'class': 'form-control rounded-pill'}}) }}
-                        {{ form_row(form.available, {'attr': {'class': 'form-check-input'}}) }}
-                    </div>
-
-                    <div class="col-md-6">
-                        {{ form_row(form.coverImage, {'attr': {'class': 'form-control'}}) }}
-                    </div>
-
-                    <div class="col-12">
-                        {{ form_row(form.description, {
-                            'attr': {
-                                'class': 'form-control rounded-4',
-                                'rows': '4',
-                                'placeholder': 'Résumé ou détails du livre…'
-                            }
-                        }) }}
-                    </div>
+        <!-- ✏️ Formulaire à droite -->
+        <div class="col-md-7">
+            {{ form_start(form) }}
+                <div class="mb-3">
+                    {{ form_label(form.title) }}
+                    {{ form_widget(form.title, {'attr': {'class': 'form-control rounded-3'}}) }}
                 </div>
-
-                <button class="btn btn-success w-100 rounded-pill mt-4">💾 Enregistrer</button>
+                <div class="mb-3">
+                    {{ form_label(form.author) }}
+                    {{ form_widget(form.author, {'attr': {'class': 'form-control rounded-3'}}) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.description) }}
+                    {{ form_widget(form.description, {'attr': {'class': 'form-control rounded-3', 'rows': 4}}) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.available) }}
+                    {{ form_widget(form.available, {'attr': {'class': 'form-check-input'}}) }}
+                </div>
+                <button class="btn btn-success rounded-pill">✅ Valider</button>
             {{ form_end(form) }}
         </div>
     </div>
