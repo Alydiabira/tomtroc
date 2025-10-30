@@ -7,6 +7,8 @@ namespace App\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
+use Symfony\Component\String\Slugger\SluggerInterface;
+
 
 #[ORM\Entity]
 class Book
@@ -41,6 +43,20 @@ class Book
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $coverUrl = null;
     private ?string $coverFilename = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
+    private ?string $slug = null;
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+        return $this;
+    }
 
     public function getCoverFilename(): ?string
     {
