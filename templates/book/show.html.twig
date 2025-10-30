@@ -2,66 +2,64 @@
 {% block body_id 'book_show' %}
 
 {% block main %}
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-10 col-xl-9">
-            <div class="bg-white rounded-4 shadow-sm overflow-hidden border p-4">
-                <div class="row g-4 align-items-start">
-                    <!-- 📷 Image du livre à gauche -->
-                    <div class="col-md-5">
-                        <div class="rounded-4 overflow-hidden border">
-                            {% if book.coverImage %}
-                                <img src="{{ asset('uploads/covers/' ~ book.coverImage) }}" alt="{{ book.title }}" class="w-100 object-fit-cover" style="height: 100%; max-height: 420px;">
+<main class="container-fluid d-flex justify-content-center align-items-start py-5">
+    <div class="w-100" style="max-width: 960px;">
+        <div class="bg-white rounded-4 shadow-sm overflow-hidden border p-4">
+            <div class="row g-4 align-items-start">
+                <!-- 📷 Image du livre à gauche -->
+                <div class="col-md-5">
+                    <div class="rounded-4 overflow-hidden border">
+                        {% if book.coverImage %}
+                            <img src="{{ asset('uploads/covers/' ~ book.coverImage) }}" alt="{{ book.title }}" class="w-100 object-fit-cover" style="height: 100%; max-height: 420px;">
+                        {% else %}
+                            <img src="{{ asset('images/default-book.jpg') }}" alt="Livre" class="w-100 object-fit-cover" style="height: 100%; max-height: 420px;">
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- 📚 Infos du livre à droite -->
+                <div class="col-md-7">
+                    <h1 class="h4 fw-bold mb-2">{{ book.title }}</h1>
+                    <p class="text-muted mb-3">par {{ book.author }}</p>
+
+                    <hr class="my-2 border-top border-muted mx-auto" style="width: 30px; height: 1px;">
+
+                    {% if book.description %}
+                        <p class="h6 text-uppercase text-muted fw-semibold mb-2">Description</p>
+                        <p class="lh-base">{{ book.description }}</p>
+                    {% endif %}
+
+                    <!-- 👤 Propriétaire -->
+                    <div class="rounded-4 p-3 mb-4">
+                        <p class="text-uppercase text-muted fw-semibold small mb-3">Propriétaire</p>
+                        <div class="bg-white px-3 py-2 rounded-pill shadow-sm d-inline-flex align-items-center">
+                            {% if book.owner.avatar %}
+                                <img src="{{ asset('uploads/' ~ book.owner.avatar) }}" alt="Avatar de {{ book.owner.pseudo ?: book.owner.username }}" class="rounded-circle shadow-sm me-2" width="40" height="40">
                             {% else %}
-                                <img src="{{ asset('images/default-book.jpg') }}" alt="Livre" class="w-100 object-fit-cover" style="height: 100%; max-height: 420px;">
+                                <img src="{{ asset('images/default-avatar.png') }}" alt="Avatar par défaut" class="rounded-circle shadow-sm me-2" width="40" height="40">
                             {% endif %}
+                            <strong class="text-dark">{{ book.owner.pseudo ?: book.owner.username }}</strong>
                         </div>
                     </div>
 
-                    <!-- 📚 Infos du livre à droite -->
-                    <div class="col-md-7">
-                        <h1 class="h4 fw-bold mb-2">{{ book.title }}</h1>
-                        <p class="text-muted mb-3">par {{ book.author }}</p>
-
-                        <hr class="hr-mini">
-
-                        {% if book.description %}
-                            <p class="h6 text-uppercase text-muted fw-semibold mb-2">Description</p>
-                            <p class="lh-base">{{ book.description }}</p>
-                        {% endif %}
-
-                        <!-- 👤 Propriétaire -->
-                        <div class="rounded-4 p-3 mb-4">
-                            <p class="text-uppercase text-muted fw-semibold small mb-3">Propriétaire</p>
-                            <div class="bg-white px-3 py-2 rounded-pill shadow-sm d-inline-flex align-items-center">
-                                {% if book.owner.avatar %}
-                                    <img src="{{ asset('uploads/' ~ book.owner.avatar) }}" alt="Avatar de {{ book.owner.pseudo ?: book.owner.username }}" class="rounded-circle shadow-sm me-2" width="40" height="40">
-                                {% else %}
-                                    <img src="{{ asset('images/default-avatar.png') }}" alt="Avatar par défaut" class="rounded-circle shadow-sm me-2" width="40" height="40">
-                                {% endif %}
-                                <strong class="text-dark">{{ book.owner.pseudo ?: book.owner.username }}</strong>
-                            </div>
-                        </div>
-
-                        {% if app.user and app.user.id != book.owner.id %}
-                            <a href="{{ path('start_conversation', {id: book.owner.id}) }}" class="btn btn-success rounded-pill px-4">
-                                 Envoyer un message
-                            </a>
-                        {% endif %}
-                    </div>
+                    {% if app.user and app.user.id != book.owner.id %}
+                        <a href="{{ path('start_conversation', {id: book.owner.id}) }}" class="btn btn-success rounded-pill px-4">
+                            💬 Envoyer un message
+                        </a>
+                    {% endif %}
                 </div>
             </div>
-
-            {% if app.user and app.user.id == book.owner.id %}
-                <div class="text-end mt-4">
-                    <a href="{{ path('book_edit', {id: book.id}) }}" class="btn btn-outline-secondary rounded-pill me-2">✏️ Modifier</a>
-                    <form method="POST" action="{{ path('book_delete', {id: book.id}) }}" class="d-inline-block" onsubmit="return confirm('Supprimer ce livre ?')">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ book.id) }}">
-                        <button class="btn btn-outline-danger rounded-pill">🗑️ Supprimer</button>
-                    </form>
-                </div>
-            {% endif %}
         </div>
+
+        {% if app.user and app.user.id == book.owner.id %}
+            <div class="text-end mt-4">
+                <a href="{{ path('book_edit', {id: book.id}) }}" class="btn btn-outline-secondary rounded-pill me-2">✏️ Modifier</a>
+                <form method="POST" action="{{ path('book_delete', {id: book.id}) }}" class="d-inline-block" onsubmit="return confirm('Supprimer ce livre ?')">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ book.id) }}">
+                    <button class="btn btn-outline-danger rounded-pill">🗑️ Supprimer</button>
+                </form>
+            </div>
+        {% endif %}
     </div>
-</div>
+</main>
 {% endblock %}
